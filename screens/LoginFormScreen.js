@@ -1,47 +1,72 @@
 import {
-    StyleSheet,
-    Text,
-    View,
-    SafeAreaView,
-    KeyboardAvoidingView,
-    TextInput,
-    Pressable,
-    ActivityIndicator
-  } from "react-native";
-  import { Ionicons } from "@expo/vector-icons";
-  import React, { useEffect, useState } from "react";
-  import { MaterialCommunityIcons } from "@expo/vector-icons";
-  import { useNavigation } from "@react-navigation/native";
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  TextInput,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import request  from "../utils/request";
 
+const LoginScreen = () => {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState("");
+  const navigation = useNavigation();
 
+  const login = () => {
+    request(
+      "post",
+      "login-form",
+      { "Content-Type": "application/x-www-form-urlencoded" },
+      {
+        grant_type: "password",
+        username: "hhhhh",
+        password: "popopopo",
+      },
+      [],
+      onLoginSuccess,
+      onLoginFailed
+    );
+  };
 
-  const LoginScreen = () => {
-    const [email, setEmail] = useState("");
-    const [loading,setLoading] = useState(false);
-    const [password, setPassword] = useState("");
-    const navigation = useNavigation();
-  
-    
-    const login = () => {
-        navigation.navigate('Home');
-    }
-  
-    return (
-      <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor: "white",
-          alignItems: "center",
-          padding: 10,
-        }}
-      >
-        {loading ? (
-          <View style={{alignItems:"center",justifyContent:"center",flexDirection:"row",flex:1}}>
-            <Text style={{marginRight:10}}>Loading</Text>
-            <ActivityIndicator size="large" color={"red"}/>
-          </View>
-        ) : (
-          <KeyboardAvoidingView>
+  const onLoginSuccess = (response, username) => {
+    console.log(response, username);
+  };
+
+  const onLoginFailed = (err) => {
+    console.log(err);
+  };
+
+  return (
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+        alignItems: "center",
+        padding: 10,
+      }}
+    >
+      {loading ? (
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "row",
+            flex: 1,
+          }}
+        >
+          <Text style={{ marginRight: 10 }}>Loading</Text>
+          <ActivityIndicator size="large" color={"red"} />
+        </View>
+      ) : (
+        <KeyboardAvoidingView>
           <View
             style={{
               justifyContent: "center",
@@ -49,15 +74,17 @@ import {
               marginTop: 100,
             }}
           >
-            <Text style={{ fontSize: 20, color: "#662d91", fontWeight: "bold" }}>
+            <Text
+              style={{ fontSize: 20, color: "#662d91", fontWeight: "bold" }}
+            >
               Sign In
             </Text>
-  
+
             <Text style={{ fontSize: 18, marginTop: 8, fontWeight: "600" }}>
               Sign In to your account
             </Text>
           </View>
-  
+
           <View style={{ marginTop: 50 }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <MaterialCommunityIcons
@@ -80,7 +107,7 @@ import {
                 }}
               />
             </View>
-  
+
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Ionicons name="key-outline" size={24} color="black" />
               <TextInput
@@ -99,9 +126,9 @@ import {
                 }}
               />
             </View>
-  
+
             <Pressable
-            onPress={login}
+              onPress={login}
               style={{
                 width: 200,
                 backgroundColor: "#318CE7",
@@ -112,12 +139,17 @@ import {
                 marginRight: "auto",
               }}
             >
-              <Text style={{ fontSize: 18, textAlign: "center", color: "white" }}>
+              <Text
+                style={{ fontSize: 18, textAlign: "center", color: "white" }}
+              >
                 Login
               </Text>
             </Pressable>
-  
-            <Pressable onPress={() => navigation.navigate("Register")} style={{ marginTop: 20 }}>
+
+            <Pressable
+              onPress={() => navigation.navigate("Register")}
+              style={{ marginTop: 20 }}
+            >
               <Text
                 style={{
                   textAlign: "center",
@@ -125,16 +157,15 @@ import {
                   color: "gray",
                   fontWeight: "500",
                 }}
-              >
-              </Text>
+              ></Text>
             </Pressable>
           </View>
         </KeyboardAvoidingView>
-        )}
-      </SafeAreaView>
-    );
-  };
-  
-  export default LoginScreen;
-  
-  const styles = StyleSheet.create({});
+      )}
+    </SafeAreaView>
+  );
+};
+
+export default LoginScreen;
+
+const styles = StyleSheet.create({});
