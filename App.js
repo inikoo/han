@@ -1,21 +1,16 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { Provider } from "react-redux";
-import StackNavigator from "./StackNavigator";
-import store from "./store";
+import * as React from 'react';
+import {SafeAreaView, Text} from 'react-native';
+import {DrawerActions, NavigationContainer} from '@react-navigation/native';
+import { registerRootComponent } from 'expo';
+
+import AuthNavigator from './navigation/AuthNavigator';
 
 export default function App() {
   return (
-    <Provider store={store}>
-      <StackNavigator />
-      <StatusBar style="auto" />
-    </Provider>
-  );
+    <NavigationContainer>
+      <AuthNavigator />
+    </NavigationContainer>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-});
+registerRootComponent(App);

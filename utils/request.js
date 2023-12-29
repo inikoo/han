@@ -4,7 +4,6 @@ import validate from "validate.js";
 import Urls from "../config/Urls";
 import Sites from "../config/Sites";
 
-
 const CancelToken = axios.CancelToken;
 let api,
 	parentArgs,
@@ -103,7 +102,7 @@ function Request(
 		for (let header in headers) {
 			axios.defaults.headers.common[header] = headers[header];
 		}
-
+		console.log('ssss',Sites.HAN.API + api, data)
 		axios[method](Sites.HAN.API + api, data, {
 			cancelToken: new CancelToken(function executor(c) {
 				instance.cancel = c;

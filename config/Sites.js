@@ -1,11 +1,11 @@
 function sites() {
 	if (__DEV__) {
 		return {
-			API: "http://wowsbar.test/"
+			API: "https://wowsbar.com/"
 		};
 	} else {
 		return {
-            API: "http://wowsbar.test/"
+            API: "https://wowsbar.com/"
 		};
 	}
 }
