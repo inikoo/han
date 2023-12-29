@@ -1,4 +1,9 @@
 import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faQrcode } from '../../private/fa/pro-light-svg-icons'
+import { library } from '@fortawesome/fontawesome-svg-core'
+library.add(faQrcode)
+
 import {
   StyleSheet,
   Text,
@@ -11,21 +16,24 @@ import {
 import { COLORS, ROUTES } from "../../constants";
 import Request from "../../utils/request";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 
-const onSubmit=()=>{
-  Request(
-    "post",
-    "login-form",
-    { "Content-Type": "application/x-www-form-urlencoded" },
-    {
-      username: "aiku",
-      password: "hello",
-    },
-    [],
-    onLoginSuccess,
-    onLoginFailed
-  );
-};
+const onSubmit = async () => {
+  try {
+    const response = await axios.post(
+      "https://925d-103-89-79-18.ngrok-free.app/api/tokens/credentials",
+      { username: "wwww", password: "hello", device_name: "android" },
+      {
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    )
+    console.log("response", response)
+  } catch (error) {
+    console.log("====", error)
+  }
+}
 
 const onLoginSuccess=(res)=>{
   console.log(res)
@@ -45,7 +53,7 @@ const Login = (props) => {
         <View style={styles.wFull}>
           <View style={styles.row}>
             {/*  <Logo width={55} height={55} style={styles.mr7} /> */}
-            <Text style={styles.brandName}>HAN</Text>
+            <Text style={styles.brandName}>HssssAN</Text>
           </View>
 
           <Text style={styles.loginContinueTxt}>Login in to continue</Text>
@@ -70,7 +78,12 @@ const Login = (props) => {
             onPress={() => navigation.navigate(ROUTES.LOGIN_SCANNER)}
             style={styles.forgotPassBtn}
           >
-            <Text style={styles.forgotPassText}>Login use QR code</Text>
+              <Text style={styles.forgotPassText}>
+                <Text>Login use QR code</Text>
+                <FontAwesomeIcon style={ {color: COLORS.primary} } icon={ faQrcode } />
+                </Text>
+            {/* <View >
+            </View> */}
           </TouchableOpacity>
         </View>
 
