@@ -9,11 +9,34 @@ import {
   Pressable,
 } from "react-native";
 import { COLORS, ROUTES } from "../../constants";
-/* import Logo from '../../assets/icons/LOGO.svg'; */
+import Request from "../../utils/request";
 import { useNavigation } from "@react-navigation/native";
 
+const onSubmit=()=>{
+  Request(
+    "post",
+    "login-form",
+    { "Content-Type": "application/x-www-form-urlencoded" },
+    {
+      username: "aiku",
+      password: "hello",
+    },
+    [],
+    onLoginSuccess,
+    onLoginFailed
+  );
+};
+
+const onLoginSuccess=(res)=>{
+  console.log(res)
+}
+
+const onLoginFailed=(res)=>{
+  console.log(res)
+}
+
+
 const Login = (props) => {
-  // const {navigation} = props;
   const navigation = useNavigation();
 
   return (
@@ -31,7 +54,7 @@ const Login = (props) => {
 
           <View style={styles.loginBtnWrapper}>
             <Pressable
-              onPress={() => navigation.navigate(ROUTES.HOME)}
+              onPress={onSubmit}
               activeOpacity={0.7}
               style={styles.loginBtn}
             >

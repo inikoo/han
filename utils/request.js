@@ -10,6 +10,7 @@ let api,
 	instance = {};
 
 function onError(error, extra, onFailed) {
+	console.log('err',error, extra, onFailed)
 	if (typeof error !== "undefined") {
 		if (typeof error.response !== "undefined") {
 			if (typeof error.response.data !== "undefined") {
