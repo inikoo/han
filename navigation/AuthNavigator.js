@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Login } from '../screens';
+import { Login, LoginScanner } from '../screens';
 import {COLORS, ROUTES} from '../constants';
 import DrawerNavigator from './DrawerNavigator';
 
@@ -11,25 +11,16 @@ function AuthNavigator() {
   console.log(Stack);
   return (
     <Stack.Navigator screenOptions={{}} initialRouteName={ROUTES.LOGIN}>
-      {/* <Stack.Screen
-        name={ROUTES.FORGOT_PASSWORD}
-        component={ForgotPassword}
-        options={({route}) => ({
-          headerTintColor: COLORS.white,
-          // headerBackTitle: 'Back',
-          headerBackTitleVisible: false,
-          headerStyle: {
-            backgroundColor: COLORS.primary,
-          },
-          title: route.params.userId,
-        })}
-      /> */}
       <Stack.Screen
         name={ROUTES.LOGIN}
         component={Login}
         options={{headerShown: false}}
       />
-      {/* <Stack.Screen name={ROUTES.REGISTER} component={Register} /> */}
+        <Stack.Screen
+        name={ROUTES.LOGIN_SCANNER}
+        component={LoginScanner}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name={ROUTES.HOME}
         component={DrawerNavigator}

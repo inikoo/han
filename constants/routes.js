@@ -1,22 +1,15 @@
 export default {
     LOGIN: 'Login',
-    REGISTER: 'Register',
-    FORGOT_PASSWORD: 'Forgot Password',
+    LOGIN_SCANNER : 'LoginScanner',
   
     HOME: 'Home',
-    HOME_TAB: 'Home Tab',
-    HOME_DRAWER: 'Home Drawer',
-  
-    WALLET: 'Wallet',
-    WALLET_DRAWER: 'Wallet Drawer',
-  
-    NOTIFICATIONS: 'Notifications',
-    NOTIFICATIONS_DRAWER: 'Notifications Drawer',
+    HOME_TAB: 'HomeTab',
+    HOME_DRAWER: 'HomeDrawer',
   
     SETTINGS: 'Settings',
-    ACCOUNT_SETTINGS: 'Account Settings',
-    SETTINGS_NAVIGATOR: 'Settings Navigator',
+    ACCOUNT_SETTINGS: 'AccountSettings',
+    SETTINGS_NAVIGATOR: 'SettingsNavigator',
   
-    SETTINGS_DETAIL: 'Settings Detail',
+    SETTINGS_DETAIL: 'SettingsDetail',
     PROFILE: 'My Profile',
   };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -6,13 +6,13 @@ import {
   TextInput,
   SafeAreaView,
   TouchableOpacity,
-  Pressable
-} from 'react-native';
-import {COLORS, ROUTES} from '../../constants';
+  Pressable,
+} from "react-native";
+import { COLORS, ROUTES } from "../../constants";
 /* import Logo from '../../assets/icons/LOGO.svg'; */
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
-const Login = props => {
+const Login = (props) => {
   // const {navigation} = props;
   const navigation = useNavigation();
 
@@ -21,8 +21,8 @@ const Login = props => {
       <View style={styles.container}>
         <View style={styles.wFull}>
           <View style={styles.row}>
-           {/*  <Logo width={55} height={55} style={styles.mr7} /> */}
-            <Text style={styles.brandName}>Olors</Text>
+            {/*  <Logo width={55} height={55} style={styles.mr7} /> */}
+            <Text style={styles.brandName}>HAN</Text>
           </View>
 
           <Text style={styles.loginContinueTxt}>Login in to continue</Text>
@@ -30,10 +30,11 @@ const Login = props => {
           <TextInput style={styles.input} placeholder="Password" />
 
           <View style={styles.loginBtnWrapper}>
-          <Pressable
+            <Pressable
               onPress={() => navigation.navigate(ROUTES.HOME)}
               activeOpacity={0.7}
-              style={styles.loginBtn}>
+              style={styles.loginBtn}
+            >
               <Text
                 style={{ fontSize: 18, textAlign: "center", color: "white" }}
               >
@@ -42,26 +43,21 @@ const Login = props => {
             </Pressable>
           </View>
 
-          {/***************** FORGOT PASSWORD BUTTON *****************/}
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate(ROUTES.FORGOT_PASSWORD, {
-                userId: 'X0001',
-              })
-            }
-            style={styles.forgotPassBtn}>
-            <Text style={styles.forgotPassText}>Forgot Password?</Text>
+            onPress={() => navigation.navigate(ROUTES.LOGIN_SCANNER)}
+            style={styles.forgotPassBtn}
+          >
+            <Text style={styles.forgotPassText}>Login use QR code</Text>
           </TouchableOpacity>
         </View>
 
-        <View style={styles.footer}>
+        {/*     <View style={styles.footer}>
           <Text style={styles.footerText}> Don't have an account? </Text>
-          {/******************** REGISTER BUTTON *********************/}
           <TouchableOpacity
             onPress={() => navigation.navigate(ROUTES.REGISTER)}>
             <Text style={styles.signupBtn}>Sign Up</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     </SafeAreaView>
   );
@@ -72,31 +68,31 @@ export default Login;
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 16,
   },
   container: {
     padding: 15,
-    width: '100%',
-    position: 'relative',
+    width: "100%",
+    position: "relative",
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   brandName: {
     fontSize: 42,
-    textAlign: 'center',
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontWeight: "bold",
     color: COLORS.primary,
     opacity: 0.9,
   },
   loginContinueTxt: {
     fontSize: 21,
-    textAlign: 'center',
+    textAlign: "center",
     color: COLORS.gray,
     marginBottom: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   input: {
     borderWidth: 1,
@@ -111,7 +107,7 @@ const styles = StyleSheet.create({
   loginBtnWrapper: {
     height: 55,
     marginTop: 12,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -121,50 +117,51 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   linearGradient: {
-    width: '100%',
+    width: "100%",
     borderRadius: 50,
   },
   loginBtn: {
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
     height: 55,
+    backgroundColor: COLORS.primary,
   },
   loginText: {
     color: COLORS.white,
     fontSize: 16,
-    fontWeight: '400',
+    fontWeight: "400",
   },
   forgotPassText: {
     color: COLORS.primary,
-    textAlign: 'center',
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontWeight: "bold",
     marginTop: 15,
   },
   // footer
   footer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 20,
-    textAlign: 'center',
-    flexDirection: 'row',
+    textAlign: "center",
+    flexDirection: "row",
   },
   footerText: {
     color: COLORS.gray,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   signupBtn: {
     color: COLORS.primary,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   // utils
   wFull: {
-    width: '100%',
+    width: "100%",
   },
   row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 20,
   },
   mr7: {
