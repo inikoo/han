@@ -1,4 +1,9 @@
 import { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faQrcode } from '../../private/fa/pro-light-svg-icons'
+import { library } from '@fortawesome/fontawesome-svg-core'
+library.add(faQrcode)
+
 import {
   StyleSheet,
   Text,
@@ -85,7 +90,7 @@ const	onReadProfileFailed=(err, token)=>{
         <View style={styles.wFull}>
           <View style={styles.row}>
             {/*  <Logo width={55} height={55} style={styles.mr7} /> */}
-            <Text style={styles.brandName}>HAN</Text>
+            <Text style={styles.brandName}>HssssAN</Text>
           </View>
 
           <Text style={styles.loginContinueTxt}>Login in to continue</Text>
@@ -111,7 +116,12 @@ const	onReadProfileFailed=(err, token)=>{
             onPress={() => navigation.navigate(ROUTES.LOGIN_SCANNER)}
             style={styles.forgotPassBtn}
           >
-            <Text style={styles.forgotPassText}>Login use QR code</Text>
+              <Text style={styles.forgotPassText}>
+                <Text>Login use QR code</Text>
+                <FontAwesomeIcon style={ {color: COLORS.primary} } icon={ faQrcode } />
+                </Text>
+            {/* <View >
+            </View> */}
           </TouchableOpacity>
         </View>
 
