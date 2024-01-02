@@ -20,18 +20,12 @@ function BottomTabNavigator() {
         tabBarInactiveTintColor: COLORS.dark,
         tabBarActiveTintColor: COLORS.primary,
         tabBarIcon: ({color, size, focused}) => {
-          let iconName;
+          let iconName = "ios-home-outline"
 
           if (route.name === ROUTES.HOME_TAB) {
             iconName = focused ? 'ios-home-sharp' : 'ios-home-outline';
           } else if (route.name === ROUTES.SETTINGS_NAVIGATOR) {
             iconName = focused ? 'settings' : 'settings-outline';
-          } else if (route.name === ROUTES.WALLET) {
-            iconName = focused ? 'wallet' : 'wallet-outline';
-          } else if (route.name === ROUTES.NOTIFICATIONS) {
-            iconName = focused
-              ? 'md-notifications-sharp'
-              : 'md-notifications-outline';
           }
 
           return <Icon name={iconName} size={22} color={color} />;

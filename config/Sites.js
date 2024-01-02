@@ -1,11 +1,11 @@
 function sites() {
 	if (__DEV__) {
 		return {
-			API: "http://wowsbar.test/"
+			API: "https://fae1-104-28-247-132.ngrok-free.app/"
 		};
 	} else {
 		return {
-            API: "http://wowsbar.test/"
+            API: "https://fae1-104-28-247-132.ngrok-free.app/"
 		};
 	}
 }

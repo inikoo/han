@@ -1,3 +1,4 @@
+import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Validate from "validate.js";
 
@@ -9,8 +10,7 @@ export default {
 				JSON.stringify(data)
 			);
 		} catch (err) {
-			/* Alert.alert(err.message); */
-            console.log(err)
+			Alert.alert(err.message);
 		}
 	},
 	async GetCredential() {
@@ -32,22 +32,4 @@ export default {
 	async RemoveCredential() {
 		await AsyncStorage.removeItem("@AuthenticationToken:Key");
 	},
-	async WriteTenant(data) {
-		await AsyncStorage.setItem("@TenantConfig:Key", JSON.stringify(data));
-	},
-	async GetTenant() {
-		const val = await AsyncStorage.getItem("@TenantConfig:Key");
-
-		if (Validate.isEmpty(val)) {
-			return {
-				coverageCity: false,
-				dashboardLogo: null,
-				inactiveSiteStatus: null,
-				loginLogo: null,
-				reportLogo: null
-			};
-		} else {
-			return JSON.parse(val);
-		}
-	}
 };

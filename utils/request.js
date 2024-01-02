@@ -10,7 +10,6 @@ let api,
 	instance = {};
 
 function onError(error, extra, onFailed) {
-	console.log('err',error, extra, onFailed)
 	if (typeof error !== "undefined") {
 		if (typeof error.response !== "undefined") {
 			if (typeof error.response.data !== "undefined") {
@@ -53,14 +52,9 @@ function Request(
 	onFailed = () => {},
 	extra = undefined
 ) {
-	console.log(method,url_key,data)
 	if (typeof headers !== "object") {
 		throw "Invalid headers, headers must be an object";
 	}
-	// console.log(data)
-	// if (typeof data !== "object") {
-	//   throw ("Invalid data, data must be an object")
-	// }
 
 	if (!Array.isArray(args)) {
 		throw "Invalid arguments, data must be an array";
@@ -103,14 +97,13 @@ function Request(
 		for (let header in headers) {
 			axios.defaults.headers.common[header] = headers[header];
 		}
-		console.log('ssss',Sites.HAN.API + api, data)
 		axios[method](Sites.HAN.API + api, data, {
 			cancelToken: new CancelToken(function executor(c) {
 				instance.cancel = c;
 			})
 		})
-			.then(response => onSuccess(response, extra))
-			.catch(error => onError(error, extra, onFailed));
+			.then(response => onSuccess(response.data, extra))
+			.catch(error => console.log('sdf',error));
 	/* } */
 	return instance;
 }

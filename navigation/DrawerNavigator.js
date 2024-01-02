@@ -30,28 +30,16 @@ function DrawerNavigator() {
           ),
         }}
       />
-
-     {/*  <Drawer.Screen
-        name={ROUTES.WALLET_DRAWER}
-        component={Wallet}
+       <Drawer.Screen
+        name={ROUTES.SETTINGS}
+        component={BottomTabNavigator}
         options={{
-          title: 'Wallet',
+          title: 'Setting',
           drawerIcon: ({focused, color, size}) => (
-            <Icon name="wallet" size={18} color={color} />
+            <Icon name="home-sharp" size={18} color={color} />
           ),
         }}
-      /> */}
-
-     {/*  <Drawer.Screen
-        name={ROUTES.NOTIFICATIONS_DRAWER}
-        component={Notifications}
-        options={{
-          title: 'Notifications',
-          drawerIcon: ({focused, color, size}) => (
-            <Icon name="notifications" size={18} color={color} />
-          ),
-        }}
-      /> */}
+      />
     </Drawer.Navigator>
     
   );

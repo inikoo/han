@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,34 +10,74 @@ import {
 } from "react-native";
 import { COLORS, ROUTES } from "../../constants";
 import Request from "../../utils/request";
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation } from "@react-navigation/native";
-
-const onSubmit=()=>{
-  Request(
-    "post",
-    "login-form",
-    { "Content-Type": "application/x-www-form-urlencoded" },
-    {
-      username: "aiku",
-      password: "hello",
-    },
-    [],
-    onLoginSuccess,
-    onLoginFailed
-  );
-};
-
-const onLoginSuccess=(res)=>{
-  console.log(res)
-}
-
-const onLoginFailed=(res)=>{
-  console.log(res)
-}
-
+import { userReducer } from '../../store/Reducers'
+import Action  from '../../store/Action'
 
 const Login = (props) => {
+  console.log('props',props)
   const navigation = useNavigation();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [token, setToken] = useState(null);
+  const dispatch = useDispatch()
+
+  const handleEmailChange = (text) => {
+    setEmail(text);
+  };
+
+  const handlePasswordChange = (text) => {
+    setPassword(text);
+  };
+
+
+  const onSubmit = () => {
+    Request(
+      "post",
+      "login-form",
+      {},
+      {username : email, password : password, device_name:'android'},
+      [],
+      onLoginSuccess,
+      onLoginFailed,
+    );
+  }
+
+  const onLoginSuccess=(res)=>{
+    setToken(res.token)
+    dispatch(Action.CreateUserSessionProperties(res))
+    onReadProfile(res.token)
+  }
+  
+  const onLoginFailed=(res)=>{
+    console.log('err',res)
+  }
+const data = useSelector(state => state.userReducer)
+  const onReadProfile=(token)=>{
+    console.log('data',data)
+	/* 	Request(
+			"get",
+			"profile",
+			{ Authorization: "Bearer " + token },
+			{},
+			[],
+			onReadProfileSuccess,
+			onReadProfileFailed,
+			token
+		); */
+	}
+
+ const onReadProfileSuccess=(response)=>{
+		console.log('profile',response)
+	}
+
+const	onReadProfileFailed=(err, token)=>{
+    console.log('profile',err)
+	}
+  
+
+
 
   return (
     <SafeAreaView style={styles.main}>
@@ -49,12 +89,13 @@ const Login = (props) => {
           </View>
 
           <Text style={styles.loginContinueTxt}>Login in to continue</Text>
-          <TextInput style={styles.input} placeholder="Email" />
-          <TextInput style={styles.input} placeholder="Password" />
+          <TextInput style={styles.input} placeholder="Email" onChangeText={handleEmailChange}/>
+          <TextInput style={styles.input} placeholder="Password" onChangeText={handlePasswordChange} />
 
           <View style={styles.loginBtnWrapper}>
             <Pressable
               onPress={onSubmit}
+            /*   onPress={() => navigation.navigate(ROUTES.LOGIN_SCANNER)} */
               activeOpacity={0.7}
               style={styles.loginBtn}
             >
