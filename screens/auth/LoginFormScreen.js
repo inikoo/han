@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faQrcode } from '../../private/fa/pro-light-svg-icons'
-import { library } from '@fortawesome/fontawesome-svg-core'
-library.add(faQrcode)
-
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faQrcode } from "../../private/fa/pro-light-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   StyleSheet,
   Text,
@@ -15,18 +13,18 @@ import {
 } from "react-native";
 import { COLORS, ROUTES } from "../../constants";
 import Request from "../../utils/request";
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { userReducer } from '../../store/Reducers'
-import Action  from '../../store/Action'
+import Action from "../../store/Action";
+
+library.add(faQrcode);
 
 const Login = (props) => {
-  console.log('props',props)
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState(null);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleEmailChange = (text) => {
     setEmail(text);
@@ -36,53 +34,48 @@ const Login = (props) => {
     setPassword(text);
   };
 
-
   const onSubmit = () => {
     Request(
       "post",
       "login-form",
       {},
-      {username : email, password : password, device_name:'android'},
+      { username: email, password: password, device_name: "android" },
       [],
       onLoginSuccess,
-      onLoginFailed,
+      onLoginFailed
     );
-  }
+  };
 
-  const onLoginSuccess=(res)=>{
-    setToken(res.token)
-    dispatch(Action.CreateUserSessionProperties(res))
-    onReadProfile(res.token)
-  }
-  
-  const onLoginFailed=(res)=>{
-    console.log('err',res)
-  }
-const data = useSelector(state => state.userReducer)
-  const onReadProfile=(token)=>{
-    console.log('data',data)
-	/* 	Request(
-			"get",
-			"profile",
-			{ Authorization: "Bearer " + token },
-			{},
-			[],
-			onReadProfileSuccess,
-			onReadProfileFailed,
-			token
-		); */
-	}
+  const onLoginSuccess = (res) => {
+    setToken(res.token);
+    onReadProfile(res.token);
+  };
 
- const onReadProfileSuccess=(response)=>{
-		console.log('profile',response)
-	}
+  const onLoginFailed = (res) => {
+    console.log("err", res);
+  };
 
-const	onReadProfileFailed=(err, token)=>{
-    console.log('profile',err)
-	}
-  
+  const onReadProfile = (token) => {
+    Request(
+      "get",
+      "profile",
+      { Authorization: "Bearer " + token },
+      {},
+      [],
+      onReadProfileSuccess,
+      onReadProfileFailed,
+      token
+    );
+  };
 
+  const onReadProfileSuccess = (response) => {
+    dispatch(Action.CreateUserSessionProperties({ ...response.data, token: token }));
+    navigation.navigate(ROUTES.HOME)
+  };
 
+  const onReadProfileFailed = (err, token) => {
+    console.log("profile", err);
+  };
 
   return (
     <SafeAreaView style={styles.main}>
@@ -94,13 +87,20 @@ const	onReadProfileFailed=(err, token)=>{
           </View>
 
           <Text style={styles.loginContinueTxt}>Login in to continue</Text>
-          <TextInput style={styles.input} placeholder="Email" onChangeText={handleEmailChange}/>
-          <TextInput style={styles.input} placeholder="Password" onChangeText={handlePasswordChange} />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            onChangeText={handleEmailChange}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            onChangeText={handlePasswordChange}
+          />
 
           <View style={styles.loginBtnWrapper}>
             <Pressable
               onPress={onSubmit}
-            /*   onPress={() => navigation.navigate(ROUTES.LOGIN_SCANNER)} */
               activeOpacity={0.7}
               style={styles.loginBtn}
             >
@@ -116,22 +116,12 @@ const	onReadProfileFailed=(err, token)=>{
             onPress={() => navigation.navigate(ROUTES.LOGIN_SCANNER)}
             style={styles.forgotPassBtn}
           >
-              <Text style={styles.forgotPassText}>
-                <Text>Login use QR code</Text>
-                <FontAwesomeIcon style={ {color: COLORS.primary} } icon={ faQrcode } />
-                </Text>
-            {/* <View >
-            </View> */}
+            <Text style={styles.forgotPassText}>
+              <FontAwesomeIcon style={{ color: COLORS.primary, marginRight:'5px' }} icon={faQrcode} />
+              <Text>Login use QR code</Text>
+            </Text>
           </TouchableOpacity>
         </View>
-
-        {/*     <View style={styles.footer}>
-          <Text style={styles.footerText}> Don't have an account? </Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate(ROUTES.REGISTER)}>
-            <Text style={styles.signupBtn}>Sign Up</Text>
-          </TouchableOpacity>
-        </View> */}
       </View>
     </SafeAreaView>
   );
