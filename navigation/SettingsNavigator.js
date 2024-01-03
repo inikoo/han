@@ -8,10 +8,7 @@ const Stack = createStackNavigator();
 function SettingsNavigator() {
   return (
     <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-      initialRouteName={ROUTES.LOGIN}>
+      screenOptions={{ headerShown: false }} initialRouteName={ROUTES.SETTINGS}>
       <Stack.Screen name={ROUTES.SETTINGS} component={Settings} />
       <Stack.Screen name={ROUTES.SETTINGS_DETAIL} component={SettingsDetail} />
     </Stack.Navigator>

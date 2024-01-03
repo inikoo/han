@@ -4,7 +4,6 @@ import { COLORS, ROUTES } from '../../constants';
 import { Auth } from '../../utils';
 
 const Settings = ({ navigation }) => {
-  console.log(navigation)
   const handleLogout = async () => {
     await Auth.RemoveCredential();
     navigation.replace(ROUTES.LOGIN);

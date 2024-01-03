@@ -7,9 +7,13 @@ export default {
     HOME_DRAWER: 'HomeDrawer',
   
     SETTINGS: 'Settings',
-    ACCOUNT_SETTINGS: 'AccountSettings',
-    SETTINGS_NAVIGATOR: 'SettingsNavigator',
+    SETTINGS_TAB: 'SettingTab',
+    SETTINGS_DRAWER: 'SettingsNavigator',
   
     SETTINGS_DETAIL: 'SettingsDetail',
-    PROFILE: 'My Profile',
+
+
+    PROFILE: 'Profile',
+    PROFILE_TAB: 'ProfileTab',
+    PROFILE_DRAWER: 'ProfileDrawer',
   };

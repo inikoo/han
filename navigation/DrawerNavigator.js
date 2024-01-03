@@ -1,10 +1,10 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import {COLORS, ROUTES} from '../constants';
-import {Wallet, Notifications} from '../screens';
 import BottomTabNavigator from './BottomNavigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CustomDrawer from '../components/CustomDrawer';
+import SettingsNavigator from './SettingsNavigator';
 
 const Drawer = createDrawerNavigator();
 
@@ -30,16 +30,16 @@ function DrawerNavigator() {
           ),
         }}
       />
-       <Drawer.Screen
-        name={ROUTES.SETTINGS}
-        component={BottomTabNavigator}
+     {/*   <Drawer.Screen
+        name={ROUTES.SETTINGS_DRAWER}
+        component={SettingsNavigator}
         options={{
           title: 'Setting',
           drawerIcon: ({focused, color, size}) => (
-            <Icon name="home-sharp" size={18} color={color} />
+            <Icon name="settings" size={18} color={color} />
           ),
         }}
-      />
+      /> */}
     </Drawer.Navigator>
     
   );
