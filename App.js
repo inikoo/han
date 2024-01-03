@@ -9,9 +9,9 @@ import AuthNavigator from './navigation/AuthNavigator';
 export default function App() {
   return (
     <Provider store={Store}>
-    <NavigationContainer>
-      <AuthNavigator />
-    </NavigationContainer>
+      <NavigationContainer>
+        <AuthNavigator />
+      </NavigationContainer>
     </Provider>
   )
 }

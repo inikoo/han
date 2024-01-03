@@ -16,6 +16,7 @@ import Request from "../../utils/request";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import Action from "../../store/Action";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 library.add(faQrcode);
 
@@ -52,7 +53,10 @@ const Login = (props) => {
   };
 
   const onLoginFailed = (res) => {
-    console.log("err", res);
+    showMessage({
+      message: res.data.message,
+      type: "danger",
+    });
   };
 
   const onReadProfile = (token) => {
@@ -62,13 +66,12 @@ const Login = (props) => {
       { Authorization: "Bearer " + token },
       {},
       [],
-      onReadProfileSuccess,
-      onReadProfileFailed,
-      token
+      (res) => onReadProfileSuccess(res, token),
+      onReadProfileFailed
     );
   };
 
-  const onReadProfileSuccess = (response) => {
+  const onReadProfileSuccess = (response, token) => {
     dispatch(Action.CreateUserSessionProperties({ ...response.data, token: token }));
     navigation.navigate(ROUTES.HOME)
   };
@@ -83,7 +86,7 @@ const Login = (props) => {
         <View style={styles.wFull}>
           <View style={styles.row}>
             {/*  <Logo width={55} height={55} style={styles.mr7} /> */}
-            <Text style={styles.brandName}>HssssAN</Text>
+            <Text style={styles.brandName}>HAN</Text>
           </View>
 
           <Text style={styles.loginContinueTxt}>Login in to continue</Text>
@@ -112,12 +115,15 @@ const Login = (props) => {
             </Pressable>
           </View>
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate(ROUTES.LOGIN_SCANNER)}
-            style={styles.forgotPassBtn}
-          >
-            <Text style={styles.forgotPassText}>
-              <FontAwesomeIcon style={{ color: COLORS.primary, marginRight:'5px' }} icon={faQrcode} />
+          <TouchableOpacity style={styles.forgotPassBtn}>
+            <Text
+              style={styles.forgotPassText}
+              onPress={() => navigation.navigate(ROUTES.LOGIN_SCANNER)}
+            >
+              <FontAwesomeIcon
+                style={{ color: COLORS.primary, marginRight: "5px" }}
+                icon={faQrcode}
+              />
               <Text>Login use QR code</Text>
             </Text>
           </TouchableOpacity>

@@ -103,7 +103,7 @@ function Request(
 			})
 		})
 			.then(response => onSuccess(response.data, extra))
-			.catch(error => console.log('sdf',error));
+			.catch(error => onFailed(error.response));
 	/* } */
 	return instance;
 }

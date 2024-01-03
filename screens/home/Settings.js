@@ -1,8 +1,16 @@
 import React from 'react';
-import {StyleSheet, Text, SafeAreaView, TouchableOpacity} from 'react-native';
-import {COLORS, ROUTES} from '../../constants';
+import { StyleSheet, Text, SafeAreaView, TouchableOpacity } from 'react-native';
+import { COLORS, ROUTES } from '../../constants';
+import { Auth } from '../../utils';
 
-const Settings = ({navigation}) => {
+const Settings = ({ navigation }) => {
+  console.log(navigation)
+  const handleLogout = async () => {
+    await Auth.RemoveCredential();
+    navigation.replace(ROUTES.LOGIN);
+  };
+  
+
   return (
     <SafeAreaView
       style={{
@@ -21,7 +29,7 @@ const Settings = ({navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate(ROUTES.LOGIN)}
+        onPress={handleLogout}
         style={styles.button}
         activeOpacity={0.8}>
         <Text style={styles.buttonText}>Log out</Text>

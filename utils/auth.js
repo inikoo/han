@@ -15,18 +15,14 @@ export default {
 	},
 	async GetCredential() {
 		const value = await AsyncStorage.getItem("@AuthenticationToken:Key");
-
 		if (Validate.isEmpty(value)) {
 			return {
 				username: null,
 				token: null,
-				refreshToken: null,
-				isAuth: false,
-				inAuth: false,
-				props: {}
 			};
 		} else {
-			return JSON.parse(value);
+			const data = JSON.parse(value);
+			return data
 		}
 	},
 	async RemoveCredential() {
