@@ -1,31 +1,51 @@
 import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Validate from "validate.js";
+import { useDispatch } from "react-redux";
+import Action from "../store/Action";
+import Request from "../utils/request";
 
-export default {
-	async WriteCredential(data) {
-		try {
-			await AsyncStorage.setItem(
-				"@AuthenticationToken:Key",
-				JSON.stringify(data)
-			);
-		} catch (err) {
-			Alert.alert(err.message);
-		}
-	},
-	async GetCredential() {
-		const value = await AsyncStorage.getItem("@AuthenticationToken:Key");
-		if (Validate.isEmpty(value)) {
-			return {
-				username: null,
-				token: null,
-			};
-		} else {
-			const data = JSON.parse(value);
-			return data
-		}
-	},
-	async RemoveCredential() {
-		await AsyncStorage.removeItem("@AuthenticationToken:Key");
-	},
-};
+export async function WriteCredential(data) {
+  try {
+    await AsyncStorage.setItem(
+      "@AuthenticationToken:Key",
+      JSON.stringify(data)
+    );
+  } catch (err) {
+    Alert.alert(err.message);
+  }
+}
+
+export async function UpdateCredential(token) {
+	try {
+	  const res = await new Promise((resolve, reject) => {
+		Request(
+		  'get',
+		  'profile',
+		  { Authorization: 'Bearer ' + token },
+		  {},
+		  [],
+		  (res) => {
+			resolve(res);
+		  },
+		  (err) => {
+			console.error(err);
+			reject(err);
+		  }
+		);
+	  });
+  
+	  return { status: 'Success', data: res.data };
+	} catch (err) {
+	  console.error(err);
+	  return { status: 'error', data: null };
+	}
+  }
+  
+  
+export async function RemoveCredential() {
+  try {
+    await AsyncStorage.removeItem("@AuthenticationToken:Key");
+  } catch (err) {
+    Alert.alert(err.message);
+  }
+}

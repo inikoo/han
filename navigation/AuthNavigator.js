@@ -6,6 +6,8 @@ import DrawerNavigator from "./DrawerNavigator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
 import Action from "../store/Action";
+import { UpdateCredential } from "../utils/auth";
+import { isNull } from 'lodash'
 
 const Stack = createNativeStackNavigator();
 
@@ -22,8 +24,12 @@ function AuthNavigator() {
           setUserToken(null);
         } else {
           const data = JSON.parse(value);
-          dispatch(Action.CreateUserSessionProperties(data));
-          setUserToken(data.token);
+          const newData = await UpdateCredential(data.token)
+          if(newData.status == "Success" && data.token){
+            dispatch(Action.CreateUserSessionProperties(data));
+            setUserToken(data.token);
+          }
+        
         }
       } catch (error) {
         console.error("Error fetching credentials from AsyncStorage:", error);
@@ -42,7 +48,7 @@ function AuthNavigator() {
   }
 
   return (
-    <Stack.Navigator initialRouteName={userToken ? ROUTES.HOME : ROUTES.LOGIN}>
+    <Stack.Navigator initialRouteName={userToken && !isNull(userToken) ? ROUTES.HOME : ROUTES.LOGIN}>
       <Stack.Screen
         name={ROUTES.LOGIN}
         component={Login}

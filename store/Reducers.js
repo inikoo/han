@@ -1,4 +1,4 @@
-import { Auth } from "../utils";
+import { WriteCredential } from "../utils/auth";
 
 const defaultReducer = {
   message: {
@@ -31,7 +31,7 @@ export default {
           roles: action.payload.roles,
           permissions: action.payload.permissions,
         };
-        Auth.WriteCredential(state);
+        WriteCredential(state);
         break;
     }
     return state;

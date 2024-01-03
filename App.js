@@ -5,6 +5,7 @@ import { registerRootComponent } from 'expo';
 import { Provider } from "react-redux";
 import { Store } from "./store";
 import AuthNavigator from './navigation/AuthNavigator';
+import FlashMessage from "react-native-flash-message";
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
       <NavigationContainer>
         <AuthNavigator />
       </NavigationContainer>
+      <FlashMessage position="top" />
     </Provider>
   )
 }

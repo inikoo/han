@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import Action from "../../store/Action";
 import { showMessage, hideMessage } from "react-native-flash-message";
+import { UpdateCredential } from "../../utils/auth";
 
 library.add(faQrcode);
 
@@ -47,37 +48,35 @@ const Login = (props) => {
     );
   };
 
-  const onLoginSuccess = (res) => {
+  const onLoginSuccess = async (res) => {
     setToken(res.token);
-    onReadProfile(res.token);
+    const profile = await UpdateCredential(res.token);
+    if (profile.status == "Success") {
+      dispatch(
+        Action.CreateUserSessionProperties({ ...profile.data, token: res.token })
+      );
+      navigation.navigate(ROUTES.HOME);
+    } else {
+      showMessage({
+        message: "failed to get user data",
+        type: "danger",
+      });
+    }
   };
 
   const onLoginFailed = (res) => {
-    showMessage({
-      message: res.data.message,
-      type: "danger",
-    });
-  };
-
-  const onReadProfile = (token) => {
-    Request(
-      "get",
-      "profile",
-      { Authorization: "Bearer " + token },
-      {},
-      [],
-      (res) => onReadProfileSuccess(res, token),
-      onReadProfileFailed
-    );
-  };
-
-  const onReadProfileSuccess = (response, token) => {
-    dispatch(Action.CreateUserSessionProperties({ ...response.data, token: token }));
-    navigation.navigate(ROUTES.HOME)
-  };
-
-  const onReadProfileFailed = (err, token) => {
-    console.log("profile", err);
+    console.log(res);
+    if (res.response.data)
+      showMessage({
+        message: res.response.data.message,
+        type: "danger",
+      });
+    else {
+      showMessage({
+        message: "failed to login",
+        type: "danger",
+      });
+    }
   };
 
   return (
@@ -85,7 +84,6 @@ const Login = (props) => {
       <View style={styles.container}>
         <View style={styles.wFull}>
           <View style={styles.row}>
-            {/*  <Logo width={55} height={55} style={styles.mr7} /> */}
             <Text style={styles.brandName}>HAN</Text>
           </View>
 

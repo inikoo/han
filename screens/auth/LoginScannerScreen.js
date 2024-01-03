@@ -3,10 +3,18 @@ import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import Request from "../../utils/request";
 import { showMessage, hideMessage } from "react-native-flash-message";
+import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import Action from "../../store/Action";
+import { ROUTES } from "../../constants";
+import { UpdateCredential } from "../../utils/auth";
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  const [token, setToken] = useState(null);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -31,38 +39,30 @@ export default function App() {
   };
 
   
-  const onLoginSuccess = (res) => {
-   console.log('succses',res)
+  const onLoginSuccess = async (res) => {
+    setToken(res.token);
+    const profile = await UpdateCredential(res.token);
+    if (profile.status == "Success") {
+      dispatch(
+        Action.CreateUserSessionProperties({ ...profile.data, token: res.token })
+      );
+      navigation.navigate(ROUTES.HOME);
+    } else {
+      showMessage({
+        message: "failed to get user data",
+        type: "danger",
+      });
+    }
   };
 
   const onLoginFailed = (res) => {
     console.log('failed',res)
     showMessage({
-      message: res.data.message,
+      message: res.response.data.message,
       type: "danger",
     });
   };
 
-  const onReadProfile = (token) => {
-    Request(
-      "get",
-      "profile",
-      { Authorization: "Bearer " + token },
-      {},
-      [],
-      (res) => onReadProfileSuccess(res, token),
-      onReadProfileFailed
-    );
-  };
-
-  const onReadProfileSuccess = (response, token) => {
-    dispatch(Action.CreateUserSessionProperties({ ...response.data, token: token }));
-    navigation.navigate(ROUTES.HOME)
-  };
-
-  const onReadProfileFailed = (err, token) => {
-    console.log("profile", err);
-  };
 
   if (hasPermission === null) {
     return <Text>Requesting for camera permission</Text>;

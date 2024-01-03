@@ -4,6 +4,7 @@ import { COLORS } from "../../constants";
 import { useSelector, useDispatch } from "react-redux";
 const Home = () => {
   const data = useSelector((state) => state.userReducer);
+  console.log(data)
 
   return (
     <View

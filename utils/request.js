@@ -103,7 +103,7 @@ function Request(
 			})
 		})
 			.then(response => onSuccess(response.data, extra))
-			.catch(error => onFailed(error.response));
+			.catch(error => onFailed(error));
 	/* } */
 	return instance;
 }
