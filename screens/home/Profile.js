@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { COLORS } from "../../constants";
 import { useSelector, useDispatch } from "react-redux";
-const Home = () => {
+const Profile = () => {
   const data = useSelector((state) => state.userReducer);
 
   return (
@@ -19,6 +19,6 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Profile;
 
 const styles = StyleSheet.create({});

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Login, LoginScanner } from "../screens";
 import { COLORS, ROUTES } from "../constants";
-import DrawerNavigator from "./DrawerNavigator";
+import BottomNavigation from "./BottomNavigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
 import Action from "../store/Action";
@@ -61,7 +61,7 @@ function AuthNavigator() {
       />
       <Stack.Screen
         name={ROUTES.HOME}
-        component={DrawerNavigator}
+        component={BottomNavigation}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

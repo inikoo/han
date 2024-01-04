@@ -1,10 +1,29 @@
-import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Platform, TouchableOpacity} from 'react-native';
-import {COLORS, ROUTES} from '../constants';
-import { Home, Profile, Settings} from '../screens';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { COLORS, ROUTES } from "../constants";
+import { Home, Profile, Settings, HR } from "../screens";
+import { useNavigation } from "@react-navigation/native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import HRNavigator from "./HRNavigator";
+import {
+  faUserHardHat,
+  faHome,
+  faUser,
+} from "../private/fa/pro-light-svg-icons";
+import {
+  faUserHardHat as solidfaUserHardHat,
+  faHome as solidfaHome,
+  faUser as solidFaUser,
+} from "../private/fa/pro-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+library.add(
+  faUserHardHat,
+  solidfaUserHardHat,
+  solidfaHome,
+  faHome,
+  solidFaUser,
+  faUser
+);
 
 const Tab = createBottomTabNavigator();
 
@@ -13,55 +32,30 @@ function BottomTabNavigator() {
 
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
+      screenOptions={({ route }) => ({
         headerShown: false,
         tabBarShowLabel: false,
         tabBarInactiveTintColor: COLORS.dark,
         tabBarActiveTintColor: COLORS.primary,
-        tabBarIcon: ({color, size, focused}) => {
-          let iconName = "ios-home-outline"
+        tabBarIcon: ({ color, size, focused }) => {
+          let iconName = faHome;
+          let iconColor = focused ? COLORS.primary : COLORS.dark;
 
           if (route.name === ROUTES.HOME_TAB) {
-            iconName = focused ? 'ios-home-sharp' : 'ios-home-outline';
-          } else if (route.name === ROUTES.SETTINGS_TAB) {
-            iconName = focused ? 'settings' : 'settings-outline';
-          }
-          else if (route.name === ROUTES.PROFILE_TAB) {
-            iconName = focused ? 'person' : 'person-outline';
+            iconName = !focused ? faHome : solidfaHome;
+          } else if (route.name === ROUTES.HR) {
+            iconName = !focused ? faUserHardHat : solidfaUserHardHat;
+          } else if (route.name === ROUTES.PROFILE_TAB) {
+            iconName = !focused ? faUser : solidFaUser;
           }
 
-          return <Icon name={iconName} size={22} color={color} />;
+          return <FontAwesomeIcon icon={iconName} color={iconColor} />;
         },
-      })}>
-      <Tab.Screen
-        name={ROUTES.HOME_TAB}
-        component={Home}
-      />
-       <Tab.Screen
-        name={ROUTES.PROFILE_TAB}
-        component={Profile}
-      />
-      <Tab.Screen
-        name={ROUTES.SETTINGS_TAB}
-        component={Settings}
-        options={{
-          tabBarLabel: 'Settings',
-          title: 'Settings',
-          headerShown: true,
-          headerRight: () => {
-            return (
-              <TouchableOpacity onPress={() => navigation.openDrawer()}>
-                <Icon
-                  name={Platform.OS === 'ios' ? 'ios-menu' : 'md-menu'}
-                  size={30}
-                  color={COLORS.dark}
-                  style={{marginRight: 10}}
-                />
-              </TouchableOpacity>
-            );
-          },
-        }}
-      />
+      })}
+    >
+      <Tab.Screen name={ROUTES.HOME_TAB} component={Home} />
+      <Tab.Screen name={ROUTES.HR} component={HRNavigator} />
+      <Tab.Screen name={ROUTES.PROFILE_TAB} component={Profile} />
     </Tab.Navigator>
   );
 }

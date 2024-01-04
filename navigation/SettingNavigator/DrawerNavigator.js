@@ -1,9 +1,9 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import {COLORS, ROUTES} from '../constants';
-import BottomTabNavigator from './BottomNavigation';
+import {COLORS, ROUTES} from '../../constants';
+import BottomTabNavigator from '../BottomNavigation';
 import Icon from 'react-native-vector-icons/Ionicons';
-import CustomDrawer from '../components/CustomDrawer';
+import CustomDrawer from '../../components/CustomDrawer';
 import SettingsNavigator from './SettingsNavigator';
 
 const Drawer = createDrawerNavigator();
@@ -30,7 +30,7 @@ function DrawerNavigator() {
           ),
         }}
       />
-     {/*   <Drawer.Screen
+     <Drawer.Screen
         name={ROUTES.SETTINGS_DRAWER}
         component={SettingsNavigator}
         options={{
@@ -39,7 +39,7 @@ function DrawerNavigator() {
             <Icon name="settings" size={18} color={color} />
           ),
         }}
-      /> */}
+      />
     </Drawer.Navigator>
     
   );

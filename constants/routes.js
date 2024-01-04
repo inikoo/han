@@ -9,11 +9,15 @@ export default {
     SETTINGS: 'Settings',
     SETTINGS_TAB: 'SettingTab',
     SETTINGS_DRAWER: 'SettingsNavigator',
-  
+
     SETTINGS_DETAIL: 'SettingsDetail',
 
 
     PROFILE: 'Profile',
     PROFILE_TAB: 'ProfileTab',
     PROFILE_DRAWER: 'ProfileDrawer',
+
+    HR: 'Hr',
+    WORKINGPLACES : 'Working Places',
+    TIMESHEETS : 'Time Sheets'
   };
