@@ -1,55 +1,77 @@
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  View,
-  ActivityIndicator,
-  TouchableOpacity,
-} from "react-native";
-import {
-  Card,
-  Button,
-  Text,
-  Icon,
-  Chip,
-  AnimatedFAB,
-} from "react-native-paper";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
+import { Card, Button, Text, AnimatedFAB } from "react-native-paper";
 import Request from "../../../utils/request";
 import { useNavigation } from "@react-navigation/native";
 import { COLORS, ROUTES } from "../../../constants";
-import { showMessage, hideMessage } from "react-native-flash-message";
-import Header from "../../../components/Header"
+import { showMessage } from "react-native-flash-message";
+import { noop } from "lodash";
+import Header from "../../Header";
 
-const WorkingPlaces = () => {
+const BaseList = (p) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   const getDataList = () => {
     setLoading(true);
-    Request(
-      "get",
-      "hr-working-places",
-      {},
-      {},
-      [],
-      onLoginSuccess,
-      onLoginFailed
-    );
+    Request("get", p.urlKey, {}, {},p.args, onSuccess, onFailed);
   };
-
-  const onLoginSuccess = async (res) => {
-    console.log(res);
+  const onSuccess = async (res) => {
     setData(res.data);
     setLoading(false);
   };
-
-  const onLoginFailed = (res) => {
-    console.log(res);
+  const onFailed = (res) => {
     setLoading(false);
     showMessage({
       message: "failed to get user data",
       type: "danger",
     });
+  };
+
+  const renderHeader = () => {
+    return p.useHeader ? <Header record={{ count: data.length }} /> : null;
+  };
+
+  const renderCardContent = (data) => {
+    return (
+      <Card.Content key={data.slug} style={styles.cardContent}>
+        <Text style={styles.title}>{data.name}</Text>
+        <View style={styles.buttonContainer}>
+          <Button
+            icon="chevron-right"
+            onPress={() => {
+              navigation.navigate(p.urlPrefix + ' Edit', {
+                id: data.id,
+              });
+            }}
+            style={styles.button}
+          ></Button>
+        </View>
+      </Card.Content>
+    );
+  };
+
+  const renderList = () => {
+    return (
+      <Card style={styles.card}>
+        {data.map((data, index) => renderCardContent(data))}
+      </Card>
+    );
+  };
+
+  const renderAddButton = () => {
+    return p.useAddButton ? (
+      <AnimatedFAB
+        icon={"plus"}
+        label={"Label"}
+        onPress={() =>  navigation.navigate(p.urlPrefix + ' Add')}
+        visible={true}
+        animateFrom={"right"}
+        iconMode={"static"}
+        style={[styles.fabStyle]}
+      />
+    ) : null;
   };
 
   useEffect(() => {
@@ -58,34 +80,9 @@ const WorkingPlaces = () => {
 
   return !loading ? (
     <View style={styles.container}>
-      <Header />
-      <Card style={styles.card}>
-        {data.map((place, index) => (
-          <Card.Content key={place.slug} style={styles.cardContent}>
-            <Text style={styles.placeName}>{place.name}</Text>
-            <View style={styles.buttonContainer}>
-              <Button
-                icon="chevron-right"
-                onPress={() => {
-                  navigation.navigate(ROUTES.TIMESHEETS, {
-                    id: place.id,
-                  });
-                }}
-                style={styles.button}
-              ></Button>
-            </View>
-          </Card.Content>
-        ))}
-      </Card>
-      <AnimatedFAB
-        icon={"plus"}
-        label={"Label"}
-        onPress={() => console.log("Pressed")}
-        visible={true}
-        animateFrom={"right"}
-        iconMode={"static"}
-        style={[styles.fabStyle]}
-      />
+      {renderHeader()}
+      {renderList()}
+      {renderAddButton()}
     </View>
   ) : (
     <View
@@ -100,11 +97,23 @@ const WorkingPlaces = () => {
   );
 };
 
+BaseList.defaultProps = {
+  useHeader: true,
+  header: {},
+  urlKey: "",
+  urlPrefix: "",
+  useAddButton: true,
+  cardContent: noop,
+  args:[]
+};
+
+export default BaseList;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 10,
-    paddingVertical: 10,
+    paddingVertical: 0,
   },
   title: {
     fontSize: 20,
@@ -123,7 +132,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
-  placeName: {
+  title: {
     fontSize: 16,
     fontWeight: "bold",
   },
@@ -137,7 +146,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    /* paddingHorizontal: 16, */
     paddingTop: 16,
     paddingBottom: 8,
   },
@@ -158,5 +166,3 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
 });
-
-export default WorkingPlaces;

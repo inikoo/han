@@ -9,7 +9,7 @@ function Header(props) {
     if (!props.leftArea) {
       return (
         <>
-          <Text>{props.title}</Text>
+          {/* <Text>{props.title}</Text> */}
           {props.record && props.record.count !== undefined && (
             <Chip>Records: {props.record.count}</Chip>
           )}
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingTop: 0,
+    paddingTop: 10,
     paddingBottom: 8,
   },
   iconContainer: {

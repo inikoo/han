@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { COLORS } from "../../constants";
+import { COLORS } from "../../../constants";
 import { useSelector, useDispatch } from "react-redux";
 const Profile = () => {
   const data = useSelector((state) => state.userReducer);

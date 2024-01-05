@@ -6,6 +6,8 @@ export default {
 
 
 	//Human resource
-	'hr-time-sheets' : "api/hr/clocking-machines",
-	'hr-working-places' : "api/hr/workplaces"
+	'hr-time-sheets' : "api/hr/workplaces/{}/clocking-machines",
+	'hr-working-places' : "api/hr/workplaces",
+	'hr-retrive-working-places' : "api/hr/workplaces/{}"
+
 };

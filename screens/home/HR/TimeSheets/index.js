@@ -1,69 +1,16 @@
-import { StyleSheet, View } from "react-native";
 import React from "react";
-import { useEffect, useState } from "react";
-import Request from "../../../../utils/request";
-import { Card, Button, Text, Appbar  } from "react-native-paper";
-import { IconButton, MD3Colors } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
+import BaseList from "../../../../components/Base/BaseList";
+import { ROUTES } from "../../../../constants";
 
-const TimeSheets = ({ route, navigation }) => {
-  const [data, setData] = useState([]);
-  const workpalceId = route.params.id;
-
-  const getDataList = () => {
-    Request(
-      "get",
-      "hr-time-sheets",
-      {},
-      {},
-      [workpalceId],
-      onLoginSuccess,
-      onLoginFailed
-    );
-  };
-
-  const onLoginSuccess = async (res) => {
-    setData(res.data);
-    console.log(res);
-  };
-
-  const onLoginFailed = (res) => {
-    console.log(res);
-  };
-
-  useEffect(() => {
-    getDataList();
-  }, []);
-
+const TimeSheets = (p) => {
   return (
-    <View>
-      <View class={styles.header}>
-      <Appbar.Header >
-       <Appbar.Content/>
-        <Appbar.Action icon="magnify" onPress={() => {}} />
-        <Appbar.Action icon='plus' onPress={() => {}} />
-    </Appbar.Header>
-      </View>
-      
-  
-      <Card style={styles.card}>
-        {data.map((item, index) => (
-          <Card.Content key={item.slug} style={styles.cardContent}>
-            <Text style={styles.placeName}>{item.name}</Text>
-            <View style={styles.buttonContainer}>
-              <Button
-                onPress={() => {
-                  navigation.navigate("Add Time Sheets", {
-                    id: workpalceId,
-                  });
-                }}
-                style={styles.button}
-              >
-                open
-              </Button>
-            </View>
-          </Card.Content>
-        ))}
-      </Card>
+    <View style={styles.container}>
+      <BaseList 
+        urlKey='hr-time-sheets'
+        urlPrefix={ROUTES.WORKINGPLACES}
+        args={[p.route.params.id]}
+      />
     </View>
   );
 };
@@ -71,9 +18,9 @@ const TimeSheets = ({ route, navigation }) => {
 export default TimeSheets;
 
 const styles = StyleSheet.create({
-  header : {
-    padding : 0
-  }
+  container: {
+    flex: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 0,
+  },
 });
-
-
