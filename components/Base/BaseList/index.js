@@ -34,14 +34,16 @@ const BaseList = (p) => {
   };
 
   const renderCardContent = (data) => {
-    return (
+    return p.cardContent ? (
+      p.cardContent(data)
+    ) : (
       <Card.Content key={data.slug} style={styles.cardContent}>
         <Text style={styles.title}>{data.name}</Text>
         <View style={styles.buttonContainer}>
           <Button
             icon="chevron-right"
             onPress={() => {
-              navigation.navigate(p.urlPrefix + ' Edit', {
+              navigation.navigate(p.urlPrefix + " Edit", {
                 id: data.id,
               });
             }}
@@ -49,8 +51,8 @@ const BaseList = (p) => {
           ></Button>
         </View>
       </Card.Content>
-    );
-  };
+    )
+  }
 
   const renderList = () => {
     return (
@@ -103,7 +105,6 @@ BaseList.defaultProps = {
   urlKey: "",
   urlPrefix: "",
   useAddButton: true,
-  cardContent: noop,
   args:[]
 };
 
