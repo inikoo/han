@@ -1,14 +1,14 @@
 import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { COLORS } from "../../constants";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faEdit, faClock } from "../../private/fa/pro-light-svg-icons";
+/* import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faEdit, faClock } from "../../private/fa/pro-light-svg-icons"; */
 import { WorkingPlacesDetail, TimeSheets } from "../../screens";
 
 const Tab = createMaterialTopTabNavigator();
 
 function TopTabNavigator({ route, navigation }) {
-  const screenOptions = ({ route }) => ({
+/*   const screenOptions = ({ route }) => ({
     tabBarIcon: ({ color }) => {
       let icon;
       if (route.name === "WorkingPlacesDetail") {
@@ -18,7 +18,7 @@ function TopTabNavigator({ route, navigation }) {
       }
       return icon;
     },
-  });
+  }); */
 
   return (
     <Tab.Navigator
@@ -29,7 +29,7 @@ function TopTabNavigator({ route, navigation }) {
         inactiveTintColor: COLORS.dark,
         indicatorStyle: { backgroundColor: COLORS.primary },
       }}
-      screenOptions={screenOptions}
+    /*   screenOptions={screenOptions} */
     >
       <Tab.Screen name={"WorkingPlacesDetail"}>
         {(props) => (

@@ -16,31 +16,34 @@ function AuthNavigator() {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const checkUserToken = async () => {
-      try {
-        const value = await AsyncStorage.getItem("@AuthenticationToken:Key");
-        if (!value) {
-          setUserToken(null);
-        } else {
-          const data = JSON.parse(value);
-          const newData = await UpdateCredential(data.token)
-          if(newData.status == "Success" && data.token){
-            dispatch(Action.CreateUserSessionProperties(data));
-            setUserToken(data.token);
-          }
-        
-        }
-      } catch (error) {
-        console.error("Error fetching credentials from AsyncStorage:", error);
-        setUserToken(null);
-      } finally {
-        setIsLoading(false); // Set loading state to false after the check
-      }
-    };
 
+  const checkUserToken = async () => {
+    try {
+      const value = await AsyncStorage.getItem("@AuthenticationToken:Key");
+      if (!value) {
+        setUserToken(null);
+      } else {
+        const data = JSON.parse(value);
+        const newData = await UpdateCredential(data.token)
+        if(newData.status == "Success" && data.token){
+          dispatch(Action.CreateUserSessionProperties(data));
+          setUserToken(data.token);
+        }
+      
+      }
+    } catch (error) {
+      console.error("Error fetching credentials from AsyncStorage:", error);
+      setUserToken(null);
+    } finally {
+      setIsLoading(false); // Set loading state to false after the check
+    }
+  };
+
+
+  useEffect(() => {
+  
     checkUserToken(); // Call the function to check user token
-  }, []);
+  });
 
   // If still loading, you can show a loading indicator or return null
   if (isLoading) {

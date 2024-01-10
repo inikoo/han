@@ -1,71 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Login, LoginScanner } from "../screens";
-import { COLORS, ROUTES } from "../constants";
-import BottomNavigation from "./BottomNavigation";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useDispatch } from "react-redux";
-import Action from "../store/Action";
-import { UpdateCredential } from "../utils/auth";
-import { isNull } from 'lodash'
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {COLORS, ROUTES} from '../constants';
+import {Home, Profile} from '../screens';
+import {useNavigation} from '@react-navigation/native';
+import HRNavigator from './hr';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import React from 'react';
 
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
-function AuthNavigator() {
-  const [userToken, setUserToken] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const checkUserToken = async () => {
-      try {
-        const value = await AsyncStorage.getItem("@AuthenticationToken:Key");
-        if (!value) {
-          setUserToken(null);
-        } else {
-          const data = JSON.parse(value);
-          const newData = await UpdateCredential(data.token)
-          if(newData.status == "Success" && data.token){
-            dispatch(Action.CreateUserSessionProperties(data));
-            setUserToken(data.token);
-          }
-        
-        }
-      } catch (error) {
-        console.error("Error fetching credentials from AsyncStorage:", error);
-        setUserToken(null);
-      } finally {
-        setIsLoading(false); // Set loading state to false after the check
-      }
-    };
-
-    checkUserToken(); // Call the function to check user token
-  }, []);
-
-  // If still loading, you can show a loading indicator or return null
-  if (isLoading) {
-    return null; // Or return a loading indicator component
-  }
+function BottomTabNavigator() {
+  const navigation = useNavigation();
 
   return (
-    <Stack.Navigator initialRouteName={userToken && !isNull(userToken) ? ROUTES.HOME : ROUTES.LOGIN}>
-      <Stack.Screen
-        name={ROUTES.LOGIN}
-        component={Login}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name={ROUTES.LOGIN_SCANNER}
-        component={LoginScanner}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name={ROUTES.HOME}
-        component={BottomNavigation}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
+    <Tab.Navigator
+      screenOptions={({route}) => ({
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarInactiveTintColor: COLORS.dark,
+        tabBarActiveTintColor: COLORS.primary,
+      })}>
+      <Tab.Screen name={ROUTES.HOME_TAB} component={gestureHandlerRootHOC(Home)} />
+      <Tab.Screen name={ROUTES.HR} component={gestureHandlerRootHOC(HRNavigator)} />
+      <Tab.Screen name={ROUTES.PROFILE_TAB} component={gestureHandlerRootHOC(Profile)} />
+    </Tab.Navigator>
   );
 }
 
-export default AuthNavigator;
+export default BottomTabNavigator;
