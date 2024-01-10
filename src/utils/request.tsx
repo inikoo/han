@@ -8,7 +8,7 @@ let api,
 	parentArgs,
 	instance = {};
 
-function onError(error, extra, onFailed) {
+function onError(error : object, extra : object, onFailed : Function) {
 	if (typeof error !== "undefined") {
 		if (typeof error.response !== "undefined") {
 			if (typeof error.response.data !== "undefined") {
@@ -42,8 +42,8 @@ function onError(error, extra, onFailed) {
 }
 
 function Request(
-	method,
-	url_key,
+	method:String,
+	url_key:String,
 	headers = {},
 	data = {},
 	args = [],

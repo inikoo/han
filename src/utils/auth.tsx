@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import Action from "../store/Action";
 import Request from "../utils/request";
 
-export async function WriteCredential(data) {
+export async function WriteCredential(data:object) {
   try {
     await AsyncStorage.setItem(
       "@AuthenticationToken:Key",
@@ -15,7 +15,7 @@ export async function WriteCredential(data) {
   }
 }
 
-export async function UpdateCredential(token) {
+export async function UpdateCredential(token:object) {
 	try {
 	  const res = await new Promise((resolve, reject) => {
 		Request(

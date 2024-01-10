@@ -1,4 +1,4 @@
-import Auth from "./auth";
+import {WriteCredential, UpdateCredential, RemoveCredential} from "./auth";
 import Request from "./request";
 
-export { Auth, Request };
+export { WriteCredential, UpdateCredential, RemoveCredential, Request };

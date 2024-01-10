@@ -1,4 +1,4 @@
-export default {
+export const COLORS = {
     gradientForm: '#A376F1',
     primary: '#7d5fff',
     white: '#FFFFFF',

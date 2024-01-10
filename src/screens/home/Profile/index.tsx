@@ -1,4 +1,5 @@
-import {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
+
 import Request from '../../../utils/request';
 import {
   StyleSheet,
@@ -12,6 +13,7 @@ import {Chip, Button} from 'react-native-paper';
 import {RemoveCredential} from '../../../utils/auth';
 import { useNavigation } from "@react-navigation/native";
 import { ROUTES, COLORS } from '../../../constants';
+import { get } from 'lodash'
 
 const ProfileScreen = () => {
   const [profileData, setProfileData] = useState(null);
@@ -77,7 +79,7 @@ const ProfileScreen = () => {
         <View>
           <Image
             source={{
-              uri: 'https://www.bootdey.com/img/Content/avatar/avatar1.png',
+              uri: get(profileData,['avatar','original'],'https://www.bootdey.com/img/Content/avatar/avatar1.png'),
             }}
             style={styles.avatar}
           />
@@ -86,9 +88,7 @@ const ProfileScreen = () => {
           {profileData.contact_name}
         </Text>
         <Text style={[styles.infoValue, styles.centerText]}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare
-          magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa
-          sem. Etiam finibus odio quis feugiat facilisis.
+        {profileData.slug}
         </Text>
       </View>
       <View style={styles.content}>
