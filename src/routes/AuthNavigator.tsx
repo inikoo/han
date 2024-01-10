@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Login, LoginScanner } from "../screens";
+import Login from "../screens/auth/LoginFormScreen";
+import LoginScanner from "../screens/auth/LoginScannerScreen";
 import { COLORS, ROUTES } from "../constants";
 import BottomNavigation from "./BottomNavigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -16,7 +17,6 @@ function AuthNavigator() {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
 
-
   const checkUserToken = async () => {
     try {
       const value = await AsyncStorage.getItem("@AuthenticationToken:Key");
@@ -25,33 +25,33 @@ function AuthNavigator() {
       } else {
         const data = JSON.parse(value);
         const newData = await UpdateCredential(data.token)
-        if(newData.status == "Success" && data.token){
+        if (newData.status === "Success" && data.token) {
           dispatch(Action.CreateUserSessionProperties(data));
           setUserToken(data.token);
         }
-      
       }
     } catch (error) {
       console.error("Error fetching credentials from AsyncStorage:", error);
       setUserToken(null);
     } finally {
-      setIsLoading(false); // Set loading state to false after the check
+      setIsLoading(false);
     }
   };
 
+   useEffect(() => {
+    const fetchData = async () => {
+      await checkUserToken(); // Call the function to check user token
+    };
 
-  useEffect(() => {
+    fetchData();
+  }, []); 
   
-    checkUserToken(); // Call the function to check user token
-  });
-
-  // If still loading, you can show a loading indicator or return null
   if (isLoading) {
-    return null; // Or return a loading indicator component
+    return null;
   }
 
   return (
-    <Stack.Navigator initialRouteName={userToken && !isNull(userToken) ? ROUTES.HOME : ROUTES.LOGIN}>
+    <Stack.Navigator initialRouteName={userToken ? ROUTES.HOME : ROUTES.LOGIN}>
       <Stack.Screen
         name={ROUTES.LOGIN}
         component={Login}

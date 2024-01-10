@@ -96,7 +96,6 @@ function Request(
 		for (let header in headers) {
 			axios.defaults.headers.common[header] = headers[header];
 		}
-		console.log('res',Sites.HAN.API + api)
 		axios[method](Sites.HAN.API + api, data, {
 			cancelToken: new CancelToken(function executor(c) {
 				instance.cancel = c;

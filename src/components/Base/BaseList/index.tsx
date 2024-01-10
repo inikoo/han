@@ -7,6 +7,7 @@ import { COLORS, ROUTES } from "../../../constants";
 import { showMessage } from "react-native-flash-message";
 import { noop } from "lodash";
 import Header from "../../Header/HeaderList";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const BaseList = (p) => {
   const [data, setData] = useState([]);
@@ -40,15 +41,15 @@ const BaseList = (p) => {
       <Card.Content key={data.slug} style={styles.cardContent}>
         <Text style={styles.title}>{data.name}</Text>
         <View style={styles.buttonContainer}>
-          <Button
-            icon="chevron-right"
+          <Icon.Button
+            name="rocket"
             onPress={() => {
               navigation.navigate(p.urlPrefix + " Edit", {
                 id: data.id,
               });
             }}
             style={styles.button}
-          ></Button>
+          ></Icon.Button>
         </View>
       </Card.Content>
     )
@@ -57,7 +58,7 @@ const BaseList = (p) => {
   const renderList = () => {
     return (
       <Card style={styles.card}>
-        {data.map((data, index) => renderCardContent(data))}
+        {data.map((data, index) => <View>{renderCardContent(data)}</View>)}
       </Card>
     );
   };

@@ -27,7 +27,7 @@ export default function FormWorkingSpace(p) {
 
   useEffect(() => {
     getDataList();
-  }, []);
+  });
 
     return (
       <ScrollView contentContainerStyle={styles.container}>

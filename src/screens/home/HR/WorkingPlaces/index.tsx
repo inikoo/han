@@ -2,6 +2,7 @@ import { StyleSheet, View } from "react-native";
 import BaseList from "../../../../components/Base/BaseList";
 import { COLORS, ROUTES } from "../../../../constants";
 import { Card, IconButton , Avatar} from "react-native-paper";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const WorkingPlaces = () => {
   const cardContent = (data : object) => {
@@ -17,7 +18,7 @@ const WorkingPlaces = () => {
       subtitle={data.type}
       left={(props) => <Avatar.Icon {...props} icon="map-marker"/>}
       right={(props) => <IconButton {...props} icon="chevron-right" onPress={() => {}} />}
-    />
+      />
     );
   };
 
