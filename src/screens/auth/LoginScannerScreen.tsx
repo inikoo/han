@@ -1,90 +1,115 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { showMessage } from 'react-native-flash-message';
-import { useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import Action from '../../store/Action';
-import { ROUTES } from '../../constants';
-import { UpdateCredential } from  '../../utils/auth'
+import React, {useState} from 'react';
+import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {showMessage} from 'react-native-flash-message';
+import {useDispatch} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import Action from '~/store/Action';
+import {ROUTES, COLORS} from '~/constants';
+import {UpdateCredential} from '~/utils/auth';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import { RNCamera } from 'react-native-camera';
-import Request from '../../utils/request';
+import Request from '~/utils/request';
+import {Icon} from 'react-native-paper';
+import Logo from '../../../asset/logo/logo.png';
 
 export default function LoginScanner() {
-  const [scanned, setScanned] = useState(false);
+  const [scanned, setScanned] = useState(true);
   const [token, setToken] = useState(null);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const handleBarCodeScanned = async ({ data }) => {
-    if (!scanned) {
-      setScanned(true);
-      try {
-         Request(
-          'post',
-          'login-scanner',
-          {},
-          { code: data, device_name: 'android' },
-          [],
-          onLoginSuccess,
-          onLoginFailed
-        );
-      } catch (error) {
-        showMessage({
-          message: error.message || 'Failed to perform login',
-          type: 'danger',
-        });
-      }
-    }
-  };
-
-  const onLoginSuccess = async (res) => {
-    console.log(UpdateCredential)
-    setToken(res.token);
-    const profile = await UpdateCredential(res.token);
-    if (profile.status == "Success") {
-      dispatch(
-        Action.CreateUserSessionProperties({ ...profile.data, token: res.token })
+  const handleBarCodeScanned = async ({data}) => {
+    try {
+      Request(
+        'post',
+        'login-scanner',
+        {},
+        {code: data, device_name: 'android'},
+        [],
+        onLoginSuccess,
+        onLoginFailed,
       );
-      navigation.navigate(ROUTES.HOME);
-    } else {
+    } catch (error) {
       showMessage({
-        message: "failed to get user data",
-        type: "danger",
+        message: error.message || 'Failed to perform login',
+        type: 'danger',
       });
     }
   };
 
-  const onLoginFailed = (res) => {
-    console.log('failed',res)
-    showMessage({
-      message: res.response.data.message,
-      type: "danger",
-    });
+  const onLoginSuccess = async res => {
+    setScanned(false);
+    setToken(res.token);
+    const profile = await UpdateCredential(res.token);
+    if (profile.status == 'Success') {
+      dispatch(
+        Action.CreateUserSessionProperties({...profile.data, token: res.token}),
+      );
+      navigation.navigate(ROUTES.HOME);
+    } else {
+      showMessage({
+        message: 'failed to get user data',
+        type: 'danger',
+      });
+    }
   };
 
-  const onSuccess = (e) => {
-    // This method will handle the success of QR code scanning
-    console.log('Scanned data:', e.data);
-    handleBarCodeScanned(e); // Call your logic here to handle the scanned data
+  const onLoginFailed = res => {
+    console.log(res);
+    setScanned(false);
+    if(res.response.data.message){
+      showMessage({
+        message: res.response.data.message,
+        type: 'danger',
+      });
+    }else{
+      showMessage({
+        message: 'Authentication failed. Please check your credentials and try again.',
+        type: 'danger',
+      });
+    }
+   
+  };
+
+  const onSuccess = e => {
+    handleBarCodeScanned(e);
   };
 
   return (
     <View style={styles.container}>
-      <QRCodeScanner
-        onRead={onSuccess}
-        flashMode={RNCamera.Constants.FlashMode.torch}
-        topContent={
-          <Text>
-            Go to <Text>wikipedia.org/wiki/QR_code</Text> on your computer and scan the QR code.
-          </Text>
-        }
-        bottomContent={
-          <TouchableOpacity onPress={() => setScanned(false)}>
-            <Text>Scan Again</Text>
-          </TouchableOpacity>
-        }
-      />
+      {scanned ? (
+        <View style={styles.qrCodeScanner}>
+          <QRCodeScanner
+            onRead={onSuccess}
+            showMarker={true}
+            markerStyle={{
+              borderColor: COLORS.primary,
+            }}
+            topContent={
+              <View style={styles.topContentContainer}>
+                <View style={styles.row}>
+                  <Image source={Logo} style={styles.logo} />
+                  <Text style={styles.loginContinueTxt}></Text>
+                </View>
+              </View>
+            }
+            bottomContent={
+              <View style={styles.topContentContainer}>
+                <View style={styles.row}>
+                  <Text style={styles.loginDescription}>You can find the barcode from wowsbar.com</Text>
+                </View>
+              </View>
+            }
+          />
+          
+        </View>
+      ) : (
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={() => setScanned(true)}>
+          <Icon source="qrcode-scan" size={200} />
+          <Text style={styles.tryAgainText}>Scan Once More</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
@@ -94,6 +119,47 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
   },
+  qrCodeScanner: {
+    flex: 1,
+   /*  backgroundColor: 'rgba(0, 0, 0, 0.8)', // Adjust the alpha value (0.5 in this case) for the desired opacity */
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  tryAgainText: {
+    marginTop: 50,
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  logo: {
+    maxHeight: 100,
+    width: 100,
+    marginRight: 10, // Add margin for separation
+  },
+  loginContinueTxt: {
+    fontSize: 21,
+    textAlign: 'center',
+    color: COLORS.gray,
+    fontWeight: 'bold',
+  },
+  topContentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loginDescription:{
+    fontSize: 12,
+    textAlign: 'center',
+    color: COLORS.gray,
+    fontWeight: 'bold',
+  }
 });

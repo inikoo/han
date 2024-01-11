@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, ScrollView } from "react-native";
 import Request from "../../../../utils/request";
 import { useNavigation } from "@react-navigation/native";
 
-export default function FormWorkingSpace(p) {
+export default function WorkingSpaceDetail(p) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
@@ -27,7 +27,7 @@ export default function FormWorkingSpace(p) {
 
   useEffect(() => {
     getDataList();
-  });
+  },[]);
 
     return (
       <ScrollView contentContainerStyle={styles.container}>

@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, ActivityIndicator } from "react-native";
-import { Card, Button, Text, AnimatedFAB } from "react-native-paper";
-import Request from "../../../utils/request";
+import { Card, Text, AnimatedFAB, Avatar, IconButton} from "react-native-paper";
+import Request from "~/utils/request";
 import { useNavigation } from "@react-navigation/native";
-import { COLORS, ROUTES } from "../../../constants";
+import { COLORS } from "~/constants";
 import { showMessage } from "react-native-flash-message";
-import { noop } from "lodash";
-import Header from "../../Header/HeaderList";
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Header from "~/components/Header/HeaderList";
 
-const BaseList = (p) => {
+const BaseList = (p : object) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
@@ -38,29 +36,23 @@ const BaseList = (p) => {
     return p.cardContent ? (
       p.cardContent(data)
     ) : (
-      <Card.Content key={data.slug} style={styles.cardContent}>
-        <Text style={styles.title}>{data.name}</Text>
-        <View style={styles.buttonContainer}>
-          <Icon.Button
-            name="rocket"
-            onPress={() => {
-              navigation.navigate(p.urlPrefix + " Edit", {
-                id: data.id,
-              });
-            }}
-            style={styles.button}
-          ></Icon.Button>
-        </View>
-      </Card.Content>
+      <Card.Title
+      title={data.name}
+      subtitle={data.type}
+      left={(props) => <Avatar.Icon {...props} icon="map-marker"/>}
+      right={(props) => <IconButton {...props} icon="chevron-right" onPress={() => navigation.navigate(p.urlPrefix + " Edit", { id: data.id })}/>}
+      />
     )
   }
 
   const renderList = () => {
-    return (
+    return data.length > 0 ? (
       <Card style={styles.card}>
-        {data.map((data, index) => <View>{renderCardContent(data)}</View>)}
+        {data.map((data, index) => <View key={index}>{renderCardContent(data)}</View>)}
       </Card>
-    );
+    ):(
+      <Text>No data</Text>
+    )
   };
 
   const renderAddButton = () => {

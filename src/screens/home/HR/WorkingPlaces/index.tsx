@@ -1,15 +1,16 @@
 import { StyleSheet, View } from "react-native";
-import BaseList from "../../../../components/Base/BaseList";
-import { COLORS, ROUTES } from "../../../../constants";
+import BaseList from "~/components/Base/BaseList";
+import { COLORS, ROUTES } from "~/constants";
 import { Card, IconButton , Avatar} from "react-native-paper";
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const WorkingPlaces = () => {
+  const navigation = useNavigation()
+
   const cardContent = (data : object) => {
     const handleEdit = () => {
-      navigation.navigate(`${ROUTES.WORKINGPLACES} Edit`, {
-        id: data.id,
-      });
+      navigation.navigate(`${ROUTES.WORKINGPLACES} Edit`, { id: data.id });
     };
   
     return (
@@ -17,7 +18,7 @@ const WorkingPlaces = () => {
       title={data.name}
       subtitle={data.type}
       left={(props) => <Avatar.Icon {...props} icon="map-marker"/>}
-      right={(props) => <IconButton {...props} icon="chevron-right" onPress={() => {}} />}
+      right={(props) => <IconButton {...props} icon="chevron-right" onPress={handleEdit} />}
       />
     );
   };
@@ -32,6 +33,7 @@ const WorkingPlaces = () => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -3,8 +3,6 @@ import { Text, View, StyleSheet } from "react-native";
 import { TextInput } from "react-native-paper";
 
 export default function FormWorkingSpace(p : object) {
-  console.log(p);
-
   const renderFieldsForm = () => {
     switch (p.type) {
       case 'text':

@@ -30,7 +30,6 @@ const Tab = createBottomTabNavigator();
 
 function BottomTabNavigator() {
   const navigation = useNavigation();
-  console.log('navigatorBottom')
 
   return (
     <Tab.Navigator

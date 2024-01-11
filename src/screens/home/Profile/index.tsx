@@ -26,13 +26,11 @@ const ProfileScreen = () => {
   };
 
   const onSuccess = res => {
-    console.log(res);
     setProfileData(res.data);
     setLoading(false);
   };
 
   const onFailed = res => {
-    console.log(res);
     setLoading(false);
   };
 
