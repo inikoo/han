@@ -8,9 +8,17 @@ export default function FormWorkingSpace(p : object) {
       case 'text':
         return (
           <TextInput
+            style={styles.TextInput}
             {...p}
           />
         );
+        case 'textArea':
+          return (
+            <TextInput
+              style={styles.TextArea}
+              {...p}
+            />
+          );
       default:
         return null;
     }
@@ -23,4 +31,13 @@ export default function FormWorkingSpace(p : object) {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  TextInput :{
+    fontSize :12,
+    height : 40
+  },
+  TextArea : {
+    fontSize :12,
+    height : 80
+  }
+});

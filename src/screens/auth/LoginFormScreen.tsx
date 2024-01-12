@@ -14,7 +14,7 @@ import Request from '~/utils/request';
 import {useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import Action from '~/store/Action';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
 import {UpdateCredential} from '~/utils/auth';
 import Logo from '../../../asset/logo/logo.png';
 import {useForm, Controller} from 'react-hook-form';

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
-import Request from '../../../utils/request';
+import Request from '~/utils/request';
 import {
   StyleSheet,
   View,
@@ -8,17 +8,20 @@ import {
   ActivityIndicator,
   Image,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
-import {Chip, Button} from 'react-native-paper';
-import {RemoveCredential} from '../../../utils/auth';
-import { useNavigation } from "@react-navigation/native";
-import { ROUTES, COLORS } from '../../../constants';
-import { get } from 'lodash'
+import {Chip, Button, Portal, Modal, PaperProvider} from 'react-native-paper';
+import {RemoveCredential} from '~/utils/auth';
+import {useNavigation} from '@react-navigation/native';
+import {ROUTES, COLORS} from '~/constants';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const ProfileScreen = () => {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigation = useNavigation()
+  const [modalVisible, setModalVisible] = useState(false);
+  const navigation = useNavigation();
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const getData = () => {
     setLoading(true);
@@ -60,93 +63,139 @@ const ProfileScreen = () => {
     return chipColors[randomIndex];
   };
 
-
-  const logOut =()=>{
-    RemoveCredential()
+  const logOut = () => {
+    RemoveCredential();
     navigation.navigate(ROUTES.LOGIN);
-  }
+  };
+
+  const openImagePicker = () => {
+  ImagePicker.openPicker({
+    width: 300,
+    height: 400,
+    cropping: true,
+    includeBase64 : true
+  }).then(image => {
+    setSelectedImage(image.path);
+  });
+}
+
+const handleCameraLaunch = () => {
+  ImagePicker.openCamera({
+    width: 300,
+    height: 400,
+    cropping: true,
+    includeBase64 : true
+  }).then(image => {
+    setSelectedImage(image.path);
+  });
+}
+
 
   useEffect(() => {
     getData();
   }, []);
 
   return !loading ? (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <Image style={styles.coverImage} />
-      <View style={styles.avatarContainer}>
-        <View>
-          <Image
-            source={{
-              uri: get(profileData,['avatar','original'],'https://www.bootdey.com/img/Content/avatar/avatar1.png'),
-            }}
-            style={styles.avatar}
-          />
-        </View>
-        <Text style={[styles.name, styles.textWithShadow]}>
-          {profileData.contact_name}
-        </Text>
-        <Text style={[styles.infoValue, styles.centerText]}>
-        {profileData.slug}
-        </Text>
-      </View>
-      <View style={styles.content}>
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoLabel}>Username:</Text>
-          <Text style={styles.infoValue}>{profileData.username}</Text>
-        </View>
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoLabel}>Email:</Text>
-          <Text style={styles.infoValue}>{profileData.email}</Text>
-        </View>
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoLabel}>Roles:</Text>
-          <Text style={styles.infoValue}>{profileData.roles}</Text>
-        </View>
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoLabel}>Status:</Text>
-          <Text>
-            <Chip
-              style={[
-                styles.statusText,
-                profileData.status === 'Active'
-                  ? styles.activeChip
-                  : styles.inactiveChip,
-              ]}
-              textStyle={{color: '#ffff', fontSize: 12}}>
-              {profileData.status}
-            </Chip>
+    <PaperProvider>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <Image style={styles.coverImage} />
+        <View style={styles.avatarContainer}>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Image
+              source={{
+                uri: selectedImage ?  selectedImage :'https://www.bootdey.com/img/Content/avatar/avatar1.png',
+              }}
+              style={styles.avatar}
+            />
+          </TouchableOpacity>
+
+          <Text style={[styles.name, styles.textWithShadow]}>
+            {profileData.contact_name}
+          </Text>
+          <Text style={[styles.infoValue, styles.centerText]}>
+            {profileData.slug}
           </Text>
         </View>
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoLabel}>Roles:</Text>
-          {profileData.roles.map(item => (
-            <Text key={item}>
+        <View style={styles.content}>
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoLabel}>Username:</Text>
+            <Text style={styles.infoValue}>{profileData.username}</Text>
+          </View>
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoLabel}>Email:</Text>
+            <Text style={styles.infoValue}>{profileData.email}</Text>
+          </View>
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoLabel}>Roles:</Text>
+            <Text style={styles.infoValue}>{profileData.roles}</Text>
+          </View>
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoLabel}>Status:</Text>
+            <Text>
               <Chip
-                textStyle={{color: '#ffff', fontSize: 12}}
-                style={{backgroundColor: getRandomColor()}}>
-                {item}
+                style={[
+                  styles.statusText,
+                  profileData.status === 'Active'
+                    ? styles.activeChip
+                    : styles.inactiveChip,
+                ]}
+                textStyle={{color: '#ffff', fontSize: 12}}>
+                {profileData.status}
               </Chip>
             </Text>
-          ))}
+          </View>
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoLabel}>Roles:</Text>
+            {profileData.roles.map(item => (
+              <Text key={item}>
+                <Chip
+                  textStyle={{color: '#ffff', fontSize: 12}}
+                  style={{backgroundColor: getRandomColor()}}>
+                  {item}
+                </Chip>
+              </Text>
+            ))}
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              icon="account-edit-outline"
+              mode="outlined"
+              onPress={() => navigation.navigate(ROUTES.PROFILE + ' Edit')}
+              style={styles.editButton}>
+              Edit
+            </Button>
+            <Button
+              icon="logout"
+              mode="outlined"
+              onPress={logOut}
+              style={styles.logoutButton}>
+              Log out
+            </Button>
+          </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            icon="account-edit-outline"
-            mode="outlined"
-            onPress={() => console.log('Edit pressed')}
-            style={styles.editButton}>
-            Edit
-          </Button>
-          <Button
-            icon="logout"
-            mode="outlined"
-            onPress={logOut}
-            style={styles.logoutButton}>
-            Log out
-          </Button>
-        </View>
-      </View>
-    </ScrollView>
+        <Portal>
+        <Modal
+            visible={modalVisible}
+            onDismiss={() => setModalVisible(false)}
+            contentContainerStyle={styles.containerStyle}>
+            <View>
+              {selectedImage && (
+                <Image
+                  source={{ uri: selectedImage }}
+                  style={{ width: 300, height: 400 }} 
+                />
+              )}
+              <View style={{ marginTop: 20 }}>
+                <Button onPress={openImagePicker}>Choose from Device</Button>
+              </View>
+              <View style={{ marginTop: 20, marginBottom: 50 }}>
+                <Button onPress={handleCameraLaunch}>Open Camera</Button>
+              </View>
+            </View>
+          </Modal>
+        </Portal>
+      </ScrollView>
+    </PaperProvider>
   ) : (
     <View style={styles.loadingContainer}>
       <ActivityIndicator size="large" color={COLORS.primary} />
@@ -237,10 +286,10 @@ const styles = StyleSheet.create({
   },
   editButton: {
     marginBottom: 10,
-    // Properti lain sesuai kebutuhan gaya
   },
-  logoutButton: {
-    // Properti lain sesuai kebutuhan gaya
+  containerStyle: {
+    backgroundColor: 'white',
+    padding: 20,
   },
 });
 

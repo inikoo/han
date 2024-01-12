@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "../screens/auth/LoginFormScreen";
-import LoginScanner from "../screens/auth/LoginScannerScreen";
-import { COLORS, ROUTES } from "../constants";
+import { Login, LoginScanner, FormProfile} from "~/screens";
+import { ROUTES } from "~/constants";
 import BottomNavigation from "./BottomNavigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
-import Action from "../store/Action";
-import { UpdateCredential } from "../utils/auth";
-import { isNull } from 'lodash'
+import Action from "~/store/Action";
+import { UpdateCredential } from "~/utils/auth";
 
 const Stack = createNativeStackNavigator();
 
@@ -65,6 +63,11 @@ function AuthNavigator() {
       <Stack.Screen
         name={ROUTES.HOME}
         component={BottomNavigation}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ROUTES.PROFILE + ' Edit'}
+        component={FormProfile}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

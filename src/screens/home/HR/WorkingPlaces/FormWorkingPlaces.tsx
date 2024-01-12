@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { TextInput, Button } from "react-native-paper";
-import FieldsFrom from "../../../../components/FieldsForm";
+import FieldsFrom from "~/components/FieldsForm";
 import descriptor from "./Descriptor";
-import Request from "../../../../utils/request";
+import Request from "~/utils/request";
 import { showMessage } from "react-native-flash-message";
 
 export default function FormWorkingSpace({ route, navigation }) {
