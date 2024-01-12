@@ -1,71 +1,85 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, ActivityIndicator } from "react-native";
-import { Card, Text, AnimatedFAB, Avatar, IconButton} from "react-native-paper";
-import Request from "~/utils/request";
-import { useNavigation } from "@react-navigation/native";
-import { COLORS } from "~/constants";
-import { showMessage } from "react-native-flash-message";
-import Header from "~/components/Header/HeaderList";
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View, ActivityIndicator} from 'react-native';
+import {Card, Text, AnimatedFAB, Avatar, IconButton} from 'react-native-paper';
+import Request from '~/utils/request';
+import {useNavigation} from '@react-navigation/native';
+import {COLORS} from '~/constants';
+import {showMessage} from 'react-native-flash-message';
+import Header from '~/components/Header/HeaderList';
 
-const BaseList = (p : object) => {
+const BaseList = (p: object) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   const getDataList = () => {
     setLoading(true);
-    Request("get", p.urlKey, {}, {},p.args, onSuccess, onFailed);
+    Request('get', p.urlKey, {}, {}, p.args, onSuccess, onFailed);
   };
-  const onSuccess = async (res) => {
+  const onSuccess = async res => {
     setData(res.data);
     setLoading(false);
   };
-  const onFailed = (res) => {
+  const onFailed = res => {
     setLoading(false);
     showMessage({
-      message: "failed to get user data",
-      type: "danger",
+      message: 'failed to get user data',
+      type: 'danger',
     });
   };
 
   const renderHeader = () => {
-    return p.useHeader ? <Header record={{ count: data.length }} /> : null;
+    return p.useHeader ? <Header record={{count: data.length}} /> : null;
   };
 
-  const renderCardContent = (data) => {
+  const renderCardContent = data => {
     return p.cardContent ? (
       p.cardContent(data)
     ) : (
       <Card.Title
-      title={data.name}
-      subtitle={data.type}
-      left={(props) => <Avatar.Icon {...props} icon="map-marker"/>}
-      right={(props) => <IconButton {...props} icon="chevron-right" onPress={() => navigation.navigate(p.urlPrefix + " Edit", { id: data.id })}/>}
+        title={data.name}
+        subtitle={data.type}
+        left={props => <Avatar.Icon {...props} icon="map-marker" />}
+        right={props => (
+          <IconButton
+            {...props}
+            icon="chevron-right"
+            onPress={() =>
+              navigation.navigate(p.urlPrefix + ' Edit', {id: data.id})
+            }
+          />
+        )}
       />
-    )
-  }
+    );
+  };
 
   const renderList = () => {
     return data.length > 0 ? (
       <Card style={styles.card}>
-        {data.map((data, index) => <View key={index}>{renderCardContent(data)}</View>)}
+        {data.map((data, index) => (
+          <View key={index}>{renderCardContent(data)}</View>
+        ))}
       </Card>
-    ):(
+    ) : (
       <Text>No data</Text>
-    )
+    );
   };
 
   const renderAddButton = () => {
     return p.useAddButton ? (
-      <AnimatedFAB
-        icon={"plus"}
-        label={"Label"}
-        onPress={() =>  navigation.navigate(p.urlPrefix + ' Add')}
-        visible={true}
-        animateFrom={"right"}
-        iconMode={"static"}
-        style={[styles.fabStyle]}
-      />
+      p.renderAddButton ? (
+        p.renderAddButton()
+      ) : (
+        <AnimatedFAB
+          icon={'plus'}
+          label={'Label'}
+          onPress={() => navigation.navigate(p.urlPrefix + ' Add')}
+          visible={true}
+          animateFrom={'right'}
+          iconMode={'static'}
+          style={[styles.fabStyle]}
+        />
+      )
     ) : null;
   };
 
@@ -83,10 +97,9 @@ const BaseList = (p : object) => {
     <View
       style={{
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
       <ActivityIndicator size="large" color={COLORS.primary} />
     </View>
   );
@@ -95,10 +108,10 @@ const BaseList = (p : object) => {
 BaseList.defaultProps = {
   useHeader: true,
   header: {},
-  urlKey: "",
-  urlPrefix: "",
+  urlKey: '',
+  urlPrefix: '',
   useAddButton: true,
-  args:[]
+  args: [],
 };
 
 export default BaseList;
@@ -111,7 +124,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 10,
   },
   card: {
@@ -121,25 +134,25 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   cardContent: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 10,
   },
   title: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   buttonContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   button: {
     marginHorizontal: 5,
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingTop: 16,
     paddingBottom: 8,
   },
@@ -149,7 +162,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   iconContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   iconArea: {
     marginHorizontal: 5,
@@ -157,6 +170,6 @@ const styles = StyleSheet.create({
   fabStyle: {
     bottom: 16,
     right: 16,
-    position: "absolute",
+    position: 'absolute',
   },
 });

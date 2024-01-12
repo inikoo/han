@@ -21,11 +21,10 @@ function App(p) {
   const [nfcState, setNfcState] = useState(false);
   const [loading, setLoading] = useState(false);
   const data = useSelector(state => state.userReducer);
-  console.log('props', p);
-
-  const sendToServer = tag => {
-    console.log('tag', tag);
-    Request(
+  console.log(p)
+  const sendToServer = async (tag) => {
+    console.log('inii',tag,p.route.params)
+    await Request(
       'post',
       'hr-time-sheets',
       {},
@@ -37,6 +36,7 @@ function App(p) {
   };
 
   const onSuccess = res => {
+    console.log('masukkkk',res)
     showMessage({
       message: 'welcome to office',
       type: 'success',
@@ -51,23 +51,21 @@ function App(p) {
       type: 'danger',
     });
   };
+
   async function readNdef() {
     try {
       setLoading(true);
       await NfcManager.requestTechnology(NfcTech.Ndef);
       const tag = await NfcManager.getTag();
+      await sendToServer(tag);
       console.log('Tag found', tag);
-      sendToServer(tag);
     } catch (ex) {
-      console.warn('Oops!', ex);
-      // Handle error here (e.g., show an error message to the user)
+      console.warn('Error during NFC reading:', ex);
     } finally {
       setLoading(false);
       NfcManager.cancelTechnologyRequest();
     }
   }
-
-  console.log('sss', data);
 
   useEffect(() => {
     return () => {
