@@ -41,8 +41,9 @@ const WokingPlacesClockingMachines = p => {
   return (
     <View style={styles.container}>
       <BaseList
-        urlKey='hr-clocking-machines'
+        urlKey='hr-working-places-time-sheets'
         urlPrefix={ROUTES.WORKING_PLACES_CLOCKING_MACHINE}
+        args={[p.route.params.id]}
         cardContent={cardContent}
         renderAddButton={renderAddButton}
       />

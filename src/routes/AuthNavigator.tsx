@@ -8,10 +8,12 @@ import {
   Profile,
   HomeHr,
   WorkingPlaces,
-  ClockingMachines,
+  WokingPlacesClockingMachines,
   FormWorkingPlaces,
   WorkingPlacesDetail,
-  CreateTimeSheet,
+  WokingPlacesCreateClockingMachine,
+  CreateClockingMachines,
+  ClockingMachines
 } from '~/screens';
 import {ROUTES} from '~/constants';
 import BottomNavigation from './BottomNavigation';
@@ -86,26 +88,39 @@ function AuthNavigator() {
     },
     //working places
     {
-      name: ROUTES.WORKINGPLACES,
+      name: ROUTES.WORKING_PLACES,
       component: WorkingPlaces,
       option: {headerShown: true},
       permissions: ['hr', 'hr.view'],
     },
     {
-      name: ROUTES.WORKINGPLACES + 'detail',
+      name: ROUTES.WORKING_PLACES + 'detail',
       component: WorkingPlacesDetail,
       option: {headerShown: true},
       permissions: ['hr', 'hr.view'],
     },
     {
-      name: ROUTES.WORKINGPLACES + 'add',
+      name: ROUTES.WORKING_PLACES + 'add',
       component: FormWorkingPlaces,
       option: {headerShown: true},
       permissions: ['hr', 'hr.edit'],
     },
     {
-      name: ROUTES.WORKINGPLACES + 'edit',
+      name: ROUTES.WORKING_PLACES + 'edit',
       component: FormWorkingPlaces,
+      option: {headerShown: true},
+      permissions: ['hr', 'hr.edit'],
+    },
+    //WORKING_PLACES_CLOCKING_MACHINE
+    {
+      name: ROUTES.WORKING_PLACES_CLOCKING_MACHINE,
+      component: WokingPlacesClockingMachines,
+      option: {headerShown: true},
+      permissions: ['hr', 'hr.view'],
+    },
+    {
+      name: ROUTES.WORKING_PLACES_CLOCKING_MACHINE + 'add',
+      component: WokingPlacesCreateClockingMachine,
       option: {headerShown: true},
       permissions: ['hr', 'hr.edit'],
     },
@@ -118,7 +133,7 @@ function AuthNavigator() {
     },
     {
       name: ROUTES.CLOCKING_MACHINE + 'add',
-      component: CreateTimeSheet,
+      component: CreateClockingMachines,
       option: {headerShown: true},
       permissions: ['hr', 'hr.edit'],
     },
@@ -157,6 +172,34 @@ function AuthNavigator() {
             headerShown: true,
             tabBarIcon: ({color}) => (
               <Icon source="account" color={color} size={26} />
+            ),
+          },
+        },
+      ],
+    },
+    {
+      name: ROUTES.WORKING_PLACES + ' Detail',
+      option: {headerShown: false},
+      components: [
+        {
+          name: ROUTES.WORKING_PLACES + 'detail',
+          permissions: ['hr', 'hr.view'],
+          component: WorkingPlacesDetail,
+          option: {
+            headerShown: false,
+            tabBarIcon: ({color}) => (
+              <Icon source="google-maps" color={color} size={26} />
+            ),
+          },
+        },
+        {
+          name: ROUTES.HR,
+          component: WokingPlacesClockingMachines,
+          permissions: ['hr', 'hr.view'],
+          option: {
+            headerShown: true,
+            tabBarIcon: ({color}) => (
+              <Icon source="timer" color={color} size={26} />
             ),
           },
         },

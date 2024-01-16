@@ -10,7 +10,7 @@ const WorkingPlaces = () => {
 
   const cardContent = (data : object) => {
     const handleEdit = () => {
-      navigation.navigate(`${ROUTES.WORKINGPLACES} Edit`, { id: data.id });
+      navigation.navigate(`${ROUTES.WORKING_PLACES} Detail`, { id: data.id });
     };
   
     return (
@@ -27,7 +27,7 @@ const WorkingPlaces = () => {
     <View style={styles.container}>
       <BaseList
         urlKey="hr-working-places"
-        urlPrefix={ROUTES.WORKINGPLACES}
+        urlPrefix={ROUTES.WORKING_PLACES}
         cardContent={cardContent}
       />
     </View>

@@ -25,7 +25,7 @@ function App(p) {
   const sendToServer = async (tag) => {
     await Request(
       'post',
-      'hr-clocking-machines-detail',
+      'hr-time-sheets',
       {},
       {name: data.contact_name, type: 'static-nfc', nfc_tag: tag.id},
       [p.route.params.id],

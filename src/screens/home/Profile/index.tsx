@@ -113,7 +113,7 @@ const handleCameraLaunch = () => {
             {profileData.contact_name}
           </Text>
           <Text style={[styles.infoValue, styles.centerText]}>
-            {profileData.slug}
+            {profileData.about}
           </Text>
         </View>
         <View style={styles.content}>

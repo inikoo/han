@@ -6,8 +6,11 @@ export default {
     HOME: 'Home',
 
     HR: 'Human Resource',
-    WORKINGPLACES : 'Working Places',
-    CLOCKING_MACHINE : 'Clocking Machines',
+    WORKING_PLACES : 'Working Places',
+    WORKING_PLACES_CLOCKING_MACHINE : 'Clocking Machines',
+
+
+    CLOCKING_MACHINE : 'Clocking Machine',
 
 
     //BottomNavigation

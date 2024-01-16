@@ -1,8 +1,6 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLORS, ROUTES} from '~/constants';
-import {Home, Profile} from '~/screens';
 import {useNavigation} from '@react-navigation/native';
-import HRNavigator from './hr';
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
@@ -12,7 +10,6 @@ const Tab = createBottomTabNavigator();
 function BottomTabNavigator(props: object) {
   const [finalRoutes, setFinalRoutes] = useState([]);
   const navigation = useNavigation();
-  console.log('bottomNavigator', props);
 
   const checkPermissions = async (routes: Array) => {
     const value = await AsyncStorage.getItem('@AuthenticationToken:Key');
@@ -26,14 +23,12 @@ function BottomTabNavigator(props: object) {
         } else final.push(route);
       }
     } else final = routes;
-    console.log('bottom', final);
     setFinalRoutes(final);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       await checkPermissions(props.extraData.components);
-      console.log('finalRoutes', finalRoutes);
     };
     fetchData();
   }, [props.extraData.components]);
@@ -45,13 +40,13 @@ function BottomTabNavigator(props: object) {
       tabBarActiveTintColor: COLORS.primary,
     })}>
       {finalRoutes.map((item, index) => {
-        console.log('item', item, index);
         return (
           <Tab.Screen
             key={index}
             name={item.name}
             component={item.component}
             options={{...item.option}}
+            initialParams={{...props.route.params}}
           />
         );
       })}
