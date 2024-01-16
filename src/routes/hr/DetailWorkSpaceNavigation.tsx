@@ -1,7 +1,7 @@
 import React from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {COLORS} from '~/constants';
-import {WorkingPlacesDetail, TimeSheets} from '~/screens';
+import {WorkingPlacesDetail, ClockingMachines} from '~/screens';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -17,8 +17,8 @@ function TopTabNavigator({route, navigation}) {
       <Tab.Screen name='WorkingPlacesDetail'  options={{ tabBarLabel: 'Detail' }} >
         {props => ( <WorkingPlacesDetail {...props} route={route} navigation={navigation} /> )}
       </Tab.Screen>
-      <Tab.Screen name='TimeSheets'  options={{ tabBarLabel: 'Clocking Machines' }}>
-        {props => ( <TimeSheets {...props} route={route} navigation={navigation} /> )}
+      <Tab.Screen name='ClockingMachines'  options={{ tabBarLabel: 'Clocking Machines' }}>
+        {props => ( <ClockingMachines {...props} route={route} navigation={navigation} /> )}
       </Tab.Screen>
     </Tab.Navigator>
   );

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, ActivityIndicator} from 'react-native';
+import {StyleSheet, View, ActivityIndicator,ScrollView} from 'react-native';
 import {Card, Text, AnimatedFAB, Avatar, IconButton} from 'react-native-paper';
 import Request from '~/utils/request';
 import {useNavigation} from '@react-navigation/native';
@@ -90,8 +90,11 @@ const BaseList = (p: object) => {
   return !loading ? (
     <View style={styles.container}>
       {renderHeader()}
+      <ScrollView >
       {renderList()}
+      </ScrollView>
       {renderAddButton()}
+      
     </View>
   ) : (
     <View

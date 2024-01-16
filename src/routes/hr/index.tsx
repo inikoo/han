@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { HomeHr, WorkingPlaces, FormWorkingPlaces, TimeSheets, CreateTimeSheet   } from '../../screens'
+import { HomeHr, WorkingPlaces, FormWorkingPlaces, ClockingMachines, CreateTimeSheet   } from '../../screens'
 import { ROUTES } from "../../constants";
 import DetailWorkSpaceNavigation from './DetailWorkSpaceNavigation'
 
@@ -18,9 +18,9 @@ function SettingsNavigator() {
       <Stack.Screen name={ROUTES.WORKINGPLACES + ' Add'} component={FormWorkingPlaces} />
       <Stack.Screen name={ROUTES.WORKINGPLACES + ' Edit'} component={DetailWorkSpaceNavigation} />
 
-      {/*TIMESHEETS */}
-      <Stack.Screen name={ROUTES.TIMESHEETS} component={TimeSheets} />
-      <Stack.Screen name={ROUTES.TIMESHEETS + ' Add'} component={CreateTimeSheet}/>
+      {/*CLOCKING_MACHINE */}
+      <Stack.Screen name={ROUTES.CLOCKING_MACHINE} component={ClockingMachines} />
+      <Stack.Screen name={ROUTES.CLOCKING_MACHINE + ' Add'} component={CreateTimeSheet}/>
     </Stack.Navigator>
   );
 }

@@ -44,7 +44,7 @@ export default function LoginScanner() {
       dispatch(
         Action.CreateUserSessionProperties({...profile.data, token: res.token}),
       );
-      navigation.navigate(ROUTES.HOME);
+      navigation.navigate(ROUTES.BOTTOMHOME);
     } else {
       showMessage({
         message: 'failed to get user data',

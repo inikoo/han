@@ -51,7 +51,6 @@ function Request(
 	onFailed = () => {},
 	extra = undefined
 ) {
-	console.log('fggfgf',url_key)
 	if (typeof headers !== "object") {
 		throw "Invalid headers, headers must be an object";
 	}

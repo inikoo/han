@@ -83,7 +83,7 @@ function App(p) {
             <Icon
               source={nfcState ? 'nfc-search-variant' : 'nfc'}
               size={200}></Icon>
-            <Text style={styles.scanText}>Scan a Tag</Text>
+            <Text style={styles.scanText}>Click to start</Text>
           </>
         )}
       </TouchableOpacity>

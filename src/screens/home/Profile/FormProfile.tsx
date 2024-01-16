@@ -68,12 +68,10 @@ const ProfileScreen = () => {
    };
 
    const onSubmitSuccess=(res)=>{
-    console.log('data',res)
-
       dispatch(
         Action.CreateUserSessionProperties({...user, ...res}),
       );
-      navigation.navigate(ROUTES.PROFILE_TAB);
+      navigation.navigate(ROUTES.BOTTOMHOME);
     
       showMessage({
         message: 'Profile already updated',
@@ -140,7 +138,7 @@ const ProfileScreen = () => {
         </Button>
         <Button
           mode="outlined"
-          /*  onPress={() => navigation.navigate(ROUTES.PROFILE + ' Edit')} */
+          onPress={() => navigation.navigate(ROUTES.BOTTOMHOME)}
           style={styles.logoutButton}>
           Cancel
         </Button>

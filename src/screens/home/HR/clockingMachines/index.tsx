@@ -6,12 +6,12 @@ import {Avatar, IconButton, Card, AnimatedFAB} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {get} from 'lodash';
 
-const TimeSheets = p => {
+const ClockingMachines = p => {
   const navigation = useNavigation();
 
   const cardContent = (data: object) => {
     const handleEdit = () => {
-      navigation.navigate(`${ROUTES.TIMESHEETS} Add`, {id: data.id});
+      navigation.navigate(`${ROUTES.CLOCKING_MACHINE} Add`, {id: data.id});
     };
 
     return (
@@ -32,7 +32,7 @@ const TimeSheets = p => {
         icon={'plus'}
         label={'Label'}
         onPress={() =>
-          navigation.navigate(ROUTES.TIMESHEETS + ' Add', {id: p.route.params.id})
+          navigation.navigate(ROUTES.CLOCKING_MACHINE + ' Add', {id: p.route.params.id})
         }
         visible={true}
         animateFrom={'right'}
@@ -46,7 +46,7 @@ const TimeSheets = p => {
     <View style={styles.container}>
       <BaseList
         urlKey="hr-time-sheets"
-        urlPrefix={ROUTES.TIMESHEETS}
+        urlPrefix={ROUTES.CLOCKING_MACHINE}
         args={[p.route.params.id]}
         cardContent={cardContent}
         renderAddButton={renderAddButton}
@@ -55,7 +55,7 @@ const TimeSheets = p => {
   );
 };
 
-export default TimeSheets;
+export default ClockingMachines;
 
 const styles = StyleSheet.create({
   container: {

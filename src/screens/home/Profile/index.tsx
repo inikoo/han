@@ -160,7 +160,7 @@ const handleCameraLaunch = () => {
             <Button
               icon="account-edit-outline"
               mode="outlined"
-              onPress={() => navigation.navigate(ROUTES.PROFILE + ' Edit')}
+              onPress={() => navigation.navigate(ROUTES.PROFILE + 'edit')}
               style={styles.editButton}>
               Edit
             </Button>

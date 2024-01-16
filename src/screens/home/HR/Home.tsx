@@ -21,7 +21,7 @@ const HomeHR = ({ navigation }) => {
       </TouchableOpacity>
 
      {/*  <TouchableOpacity
-        onPress={() =>navigation.navigate(ROUTES.TIMESHEETS)}
+        onPress={() =>navigation.navigate(ROUTES.CLOCKING_MACHINE)}
         style={styles.button}
         activeOpacity={0.8}>
         <Text style={styles.buttonText}>TIME SHEETS</Text>
