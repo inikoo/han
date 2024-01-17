@@ -73,7 +73,7 @@ const BaseList = (p: object) => {
         <AnimatedFAB
           icon={'plus'}
           label={'Label'}
-          onPress={() => navigation.navigate(p.urlPrefix + ' Add')}
+          onPress={() => navigation.navigate(p.urlPrefix + 'add')}
           visible={true}
           animateFrom={'right'}
           iconMode={'static'}

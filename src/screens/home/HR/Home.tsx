@@ -30,9 +30,10 @@ const HomeHR = () => {
     setLoading(false);
   };
   const onFailed = res => {
+    console.log(res)
     setLoading(false);
     showMessage({
-      message: 'failed to get user data',
+      message: 'failed to get  data',
       type: 'danger',
     });
   };

@@ -16,8 +16,9 @@ export default function FormWorkingSpace({ route, navigation }) {
   } = useForm();
 
   const onSubmit = (data) => {
+    console.log('dddd',data)
     setLoading(true);
-    Request("get", p.urlKey, {}, data, [], onSuccess, onFailed);
+/*     Request("get", p.urlKey, {}, data, [], onSuccess, onFailed); */
   };
 
   const onSuccess = async (res) => {

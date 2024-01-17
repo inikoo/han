@@ -12,7 +12,7 @@ import Request from '~/utils/request';
 import {useNavigation} from '@react-navigation/native';
 import {showMessage} from 'react-native-flash-message';
 import { get } from 'lodash';
-import { Avatar } from 'react-native-paper';
+import { Avatar, Button } from 'react-native-paper';
 import {ROUTES, COLORS} from '~/constants';
 
 export default function WorkingSpaceDetail(p) {
@@ -69,15 +69,15 @@ export default function WorkingSpaceDetail(p) {
           <Text style={styles.infoLabel}>Address 2:</Text>
           <Text style={styles.infoValue}>{get(data,["address","address_line_2"])}</Text>
         </View>
-  {/*       <View style={styles.buttonContainer}>
+        <View style={styles.buttonContainer}>
           <Button
-            icon="account-edit-outline"
+            icon="lead-pencil"
             mode="outlined"
-            onPress={() => navigation.navigate(ROUTES.PROFILE + 'edit')}
+            onPress={() => navigation.navigate(ROUTES.WORKING_PLACES + 'edit')}
             style={styles.editButton}>
             Edit
           </Button>
-        </View> */}
+        </View>
       </View>
     </ScrollView>
   ) : (

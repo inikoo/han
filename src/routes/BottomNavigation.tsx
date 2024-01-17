@@ -31,14 +31,14 @@ function BottomTabNavigator(props: object) {
       await checkPermissions(props.extraData.components);
     };
     fetchData();
-  }, [props.extraData.components]);
+  }, []);
 
   return finalRoutes.length > 0 ? (
     <Tab.Navigator
-    screenOptions={({route}) => ({
-      tabBarInactiveTintColor: COLORS.dark,
-      tabBarActiveTintColor: COLORS.primary,
-    })}>
+      screenOptions={({route}) => ({
+        tabBarInactiveTintColor: COLORS.dark,
+        tabBarActiveTintColor: COLORS.primary,
+      })}>
       {finalRoutes.map((item, index) => {
         return (
           <Tab.Screen
