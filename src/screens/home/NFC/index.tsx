@@ -16,8 +16,6 @@ import {COLORS, ROUTES} from '~/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 import Action from '~/store/Action';
-import SoundPlayer from 'react-native-sound-player';
-import Sound from '../../../../Sounds/success.mp3'
 
 NfcManager.start();
 
@@ -28,8 +26,23 @@ function App(p) {
   const data = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
+ /*  const playSuccessSound = () => {
+    const successSound = new Sound('https://raw.githubusercontent.com/zmxv/react-native-sound-demo/master/file-not-here.mp3', '', (error) => {
+      if (error) {
+        console.error('Error loading sound:', error);
+      }
+    });
+
+    successSound.play((success) => {
+      if (!success) {
+        console.log('Error playing sound',success);
+      }
+    });
+  }; */
+
+
+
   const sendToServer = async tag => {
-    console.log(tag)
     await Request(
       'post',
       'hr-clocking-machines-add',
@@ -59,10 +72,13 @@ function App(p) {
   };
 
   const onSuccess = (res) => {
+    // Play the success sound
+/*     playSuccessSound(); */
+
     checkuser(res);
     navigation.navigate('Home');
     showMessage({
-      message: 'Welcome to office',
+      message: res.data.clocking_status == 'in' ? 'Welcome to office' : 'Good Bye, see you tomorrow',
       type: 'success',
     });
   };
@@ -102,6 +118,7 @@ function App(p) {
     return () => {
       NfcManager.cancelTechnologyRequest();
     };
+    
   }, []);
 
   return (
