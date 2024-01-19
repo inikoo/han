@@ -9,7 +9,7 @@ import {UpdateCredential} from '~/utils/auth';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import Request from '~/utils/request';
 import {Icon} from 'react-native-paper';
-import Logo from '../../../asset/logo/logo.png';
+import Logo from '../../../asset/logo/Green_minimalist_lizard_logo6-removebg-preview.png';
 
 export default function LoginScanner() {
   const [scanned, setScanned] = useState(true);
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   loginContinueTxt: {
     fontSize: 21,
     textAlign: 'center',
-    color: COLORS.gray,
+    color: COLORS.black,
     fontWeight: 'bold',
   },
   topContentContainer: {
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   loginDescription:{
     fontSize: 12,
     textAlign: 'center',
-    color: COLORS.gray,
+    color: COLORS.black,
     fontWeight: 'bold',
   }
 });

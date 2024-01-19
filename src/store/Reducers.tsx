@@ -30,6 +30,7 @@ export default {
           status: action.payload.status,
           roles: action.payload.roles,
           permissions: action.payload.permissions,
+          clocking_status:  action.payload.clocking_status
         };
         WriteCredential(state);
         break;

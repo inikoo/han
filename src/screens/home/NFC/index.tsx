@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,48 +6,78 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import NfcManager, {NfcTech} from 'react-native-nfc-manager';
-import {Icon} from 'react-native-paper';
+import NfcManager, { NfcTech } from 'react-native-nfc-manager';
+import { Icon } from 'react-native-paper';
 import Request from '~/utils/request';
-import {useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
-import {showMessage} from 'react-native-flash-message';
-import {ROUTES} from '~/constants';
-// Pre-step, call this before any NFC operations
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
+import { ROUTES } from '~/constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import Action from '~/store/Action';
+import Sound from 'react-native-sound';
+import Voice from '../../../../asset/sound/ttsmaker-file-2024-1-19-13-30-31.mp3';
+
 NfcManager.start();
 
 function App(p) {
   const navigation = useNavigation();
   const [nfcState, setNfcState] = useState(false);
   const [loading, setLoading] = useState(false);
-  const data = useSelector(state => state.userReducer);
+  const data = useSelector((state) => state.userReducer);
+  const dispatch = useDispatch();
+  const sound = new Sound(Voice);
 
   const sendToServer = async (tag) => {
     await Request(
       'post',
       'hr-clocking-machines-add',
       {},
-      {name: data.contact_name, type: 'static-nfc', nfc_tag: tag.id},
-      [p.route.params.id],
+      { nfc_tag: 'tIw127x29NH9' },
+      [],
       onSuccess,
-      onFailed,
+      onFailed
     );
   };
 
-  const onSuccess = res => {
+  const checkuser = async (res) => {
+    try {
+      const value = await AsyncStorage.getItem('@AuthenticationToken:Key');
+      if (value) {
+        let data = JSON.parse(value);
+        dispatch(
+          Action.CreateUserSessionProperties({
+            ...data,
+            clocking_status: res.data.status,
+          })
+        );
+      }
+    } catch (error) {
+      console.error('Error fetching credentials from AsyncStorage:', error);
+    }
+  };
+
+  const onSuccess = (res) => {
+    checkuser(res);
+    playSound();
+    /* navigation.navigate('Home'); */
     showMessage({
       message: 'welcome to office',
       type: 'success',
     });
-    navigation.navigate(ROUTES.WORKING_PLACES + 'detail', {id :p.route.params.id });
   };
 
-  const onFailed = res => {
+  const onFailed = (res) => {
     console.log('error', res);
     showMessage({
       message: 'failed to get user data',
       type: 'danger',
     });
+  };
+
+  const playSound = () => {
+    sound.play();
   };
 
   async function readNdef() {
@@ -79,7 +109,8 @@ function App(p) {
           <>
             <Icon
               source={nfcState ? 'nfc-search-variant' : 'nfc'}
-              size={200}></Icon>
+              size={200}
+            />
             <Text style={styles.scanText}>Click to start</Text>
           </>
         )}

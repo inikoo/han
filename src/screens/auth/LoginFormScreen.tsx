@@ -155,7 +155,7 @@ const Login = () => {
 
           <TouchableOpacity>
             <Text style={styles.goToScannerText}>
-              <Text onPress={() => navigation.navigate('Login Scanner')}>
+              <Text onPress={() => navigation.navigate('LoginScanner')}>
                 Login use QR code
               </Text>
             </Text>

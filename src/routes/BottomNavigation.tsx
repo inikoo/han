@@ -24,7 +24,7 @@ const BottomMenu = ({ navigation }) => {
           height: 60,
           paddingTop: 12,
           borderRadius: 35,
-          backgroundColor: COLORS.yellow,
+          backgroundColor: COLORS.primary,
         }}
       >
         {children}
