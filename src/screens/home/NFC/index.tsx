@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -6,18 +6,18 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import NfcManager, { NfcTech } from 'react-native-nfc-manager';
-import { Icon } from 'react-native-paper';
+import NfcManager, {NfcTech} from 'react-native-nfc-manager';
+import {Icon} from 'react-native-paper';
 import Request from '~/utils/request';
-import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import { showMessage } from 'react-native-flash-message';
-import { ROUTES } from '~/constants';
+import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {showMessage} from 'react-native-flash-message';
+import {COLORS, ROUTES} from '~/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 import Action from '~/store/Action';
-import Sound from 'react-native-sound';
-import Voice from '../../../../asset/sound/ttsmaker-file-2024-1-19-13-30-31.mp3';
+import SoundPlayer from 'react-native-sound-player';
+import Sound from '../../../../Sounds/success.mp3'
 
 NfcManager.start();
 
@@ -25,23 +25,23 @@ function App(p) {
   const navigation = useNavigation();
   const [nfcState, setNfcState] = useState(false);
   const [loading, setLoading] = useState(false);
-  const data = useSelector((state) => state.userReducer);
+  const data = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
-  const sound = new Sound(Voice);
 
-  const sendToServer = async (tag) => {
+  const sendToServer = async tag => {
+    console.log(tag)
     await Request(
       'post',
       'hr-clocking-machines-add',
       {},
-      { nfc_tag: 'tIw127x29NH9' },
+      {nfc_tag: tag.id},
       [],
       onSuccess,
-      onFailed
+      onFailed,
     );
   };
 
-  const checkuser = async (res) => {
+  const checkuser = async res => {
     try {
       const value = await AsyncStorage.getItem('@AuthenticationToken:Key');
       if (value) {
@@ -50,7 +50,7 @@ function App(p) {
           Action.CreateUserSessionProperties({
             ...data,
             clocking_status: res.data.status,
-          })
+          }),
         );
       }
     } catch (error) {
@@ -60,25 +60,29 @@ function App(p) {
 
   const onSuccess = (res) => {
     checkuser(res);
-    playSound();
-    /* navigation.navigate('Home'); */
+    navigation.navigate('Home');
     showMessage({
-      message: 'welcome to office',
+      message: 'Welcome to office',
       type: 'success',
     });
   };
 
-  const onFailed = (res) => {
+  const onFailed = res => {
     console.log('error', res);
-    showMessage({
-      message: 'failed to get user data',
-      type: 'danger',
-    });
+    if(res.response.data.message){
+      showMessage({
+        message: 'No working place detected',
+        type: 'danger',
+      });
+    }else{
+      showMessage({
+        message: 'failed to get nfc Tag',
+        type: 'danger',
+      });
+    }
+    
   };
 
-  const playSound = () => {
-    sound.play();
-  };
 
   async function readNdef() {
     try {
@@ -104,13 +108,10 @@ function App(p) {
     <View style={styles.wrapper}>
       <TouchableOpacity onPress={readNdef} disabled={loading}>
         {loading ? (
-          <ActivityIndicator size="large" color="#0000ff" />
+          <Icon source={'nfc-search-variant'} size={200} />
         ) : (
           <>
-            <Icon
-              source={nfcState ? 'nfc-search-variant' : 'nfc'}
-              size={200}
-            />
+            <Icon source={nfcState ? 'nfc-search-variant' : 'nfc'} size={200} />
             <Text style={styles.scanText}>Click to start</Text>
           </>
         )}
@@ -129,6 +130,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: 'center',
     fontSize: 20,
+    color: COLORS.black
   },
 });
 

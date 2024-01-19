@@ -73,7 +73,7 @@ const BottomMenu = ({ navigation }) => {
           unmountOnBlur: true,
           tabBarIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons
-              name="qrcode-scan"
+              name="nfc"
               color={"#ffffff"}
               size={32}
             />
