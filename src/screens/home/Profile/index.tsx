@@ -161,13 +161,15 @@ const handleCameraLaunch = () => {
               icon="account-edit-outline"
               mode="outlined"
               onPress={() => navigation.navigate(ROUTES.PROFILE + 'edit')}
-              style={styles.editButton}>
+              style={styles.editButton} buttonColor={COLORS.primary} textColor={COLORS.gray}>
               Edit
             </Button>
             <Button
               icon="logout"
               mode="outlined"
               onPress={logOut}
+          textColor={COLORS.primary}
+
               style={styles.logoutButton}>
               Log out
             </Button>

@@ -53,7 +53,7 @@ export default function WorkingSpaceDetail(p) {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <Image style={styles.coverImage} />
       <View style={styles.avatarContainer}>
-        <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <TouchableOpacity>
         <Avatar.Icon size={80} icon="google-maps" />
         </TouchableOpacity>
 
@@ -68,6 +68,30 @@ export default function WorkingSpaceDetail(p) {
         <View style={styles.infoContainer}>
           <Text style={styles.infoLabel}>Address 2:</Text>
           <Text style={styles.infoValue}>{get(data,["address","address_line_2"])}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoLabel}>Locality:</Text>
+          <Text style={styles.infoValue}>{get(data,["address","locality"])}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoLabel}>Dependant Locality:</Text>
+          <Text style={styles.infoValue}>{get(data,["address","dependant_locality"])}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoLabel}>Administrative Area:</Text>
+          <Text style={styles.infoValue}>{get(data,["address","administrative_area"])}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoLabel}>Country Code:</Text>
+          <Text style={styles.infoValue}>{get(data,["address","country_code"])}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoLabel}>Postal Code:</Text>
+          <Text style={styles.infoValue}>{get(data,["address","postal_code"])}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoLabel}>Sorting Code:</Text>
+          <Text style={styles.infoValue}>{get(data,["address","sorting_code"],"-")}</Text>
         </View>
         <View style={styles.buttonContainer}>
           <Button

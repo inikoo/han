@@ -88,6 +88,8 @@ function Request(
 
 	parentArgs = arguments;
 
+	console.log(Urls[url_key])
+
 /* 	if (validate.isArray(data)) {
 		RNFetchBlob.fetch(method, Sites.HAN.API + api, headers, data)
 			.then(response => onSuccess(response.json(), extra))

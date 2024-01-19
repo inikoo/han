@@ -16,25 +16,27 @@ import {useNavigation} from '@react-navigation/native';
 import Action from '~/store/Action';
 import {showMessage} from 'react-native-flash-message';
 import {UpdateCredential} from '~/utils/auth';
-import Logo from '../../../asset/logo/logo.png';
+import Logo from '../../../asset/logo/Green_minimalist_lizard_logo6-removebg-preview.png';
 import {useForm, Controller} from 'react-hook-form';
-import { getBrand } from 'react-native-device-info';
+import {getBrand} from 'react-native-device-info';
 
 const Login = () => {
   const navigation = useNavigation();
   const [token, setToken] = useState(null);
   const dispatch = useDispatch();
-  const { control, handleSubmit, formState: {errors} } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
     defaultValues: {
       username: '',
       password: '',
     },
   });
 
-
-
-  const onSubmit = async (data : object) => {
-   await Request(
+  const onSubmit = async (data: object) => {
+    await Request(
       'post',
       'login-form',
       {},
@@ -44,9 +46,7 @@ const Login = () => {
       onLoginFailed,
     );
   };
-;
-
-  const onLoginSuccess = async ( res : object ) => {
+  const onLoginSuccess = async (res: object) => {
     setToken(res.token);
     const profile = await UpdateCredential(res.token);
     if (profile.status == 'Success') {
@@ -62,7 +62,7 @@ const Login = () => {
     }
   };
 
-  const onLoginFailed = ( res : object ) => {
+  const onLoginFailed = (res: object) => {
     if (res.response.data)
       showMessage({
         message: res.response.data.message,
@@ -75,7 +75,6 @@ const Login = () => {
       });
     }
   };
-
 
   return (
     <SafeAreaView style={styles.main}>
@@ -93,8 +92,14 @@ const Login = () => {
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <TextInput
-                style={styles.input}
+                style={[
+                  styles.input,
+                  {
+                    color: COLORS.black,
+                  },
+                ]}
                 placeholder="Email"
+                placeholderTextColor={COLORS.black}
                 onChangeText={onChange}
                 value={value}
                 onBlur={onBlur}
@@ -117,9 +122,15 @@ const Login = () => {
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <TextInput
-                style={styles.input}
+                style={[
+                  styles.input,
+                  {
+                    color: COLORS.black,
+                  },
+                ]}
                 secureTextEntry={true}
                 placeholder="Password"
+                placeholderTextColor={COLORS.black}
                 onChangeText={onChange}
                 value={value}
                 onBlur={onBlur}
@@ -143,10 +154,10 @@ const Login = () => {
           </View>
 
           <TouchableOpacity>
-            <Text
-              style={styles.forgotPassText}
-              onPress={() => navigation.navigate(ROUTES.LOGIN_SCANNER)}>
-              <Text>Login use QR code</Text>
+            <Text style={styles.goToScannerText}>
+              <Text onPress={() => navigation.navigate('Login Scanner')}>
+                Login use QR code
+              </Text>
             </Text>
           </TouchableOpacity>
         </View>
@@ -172,23 +183,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  brandName: {
-    fontSize: 42,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: COLORS.primary,
-    opacity: 0.9,
-  },
   loginContinueTxt: {
     fontSize: 21,
     textAlign: 'center',
-    color: COLORS.gray,
+    color: COLORS.black,
     marginBottom: 16,
     fontWeight: 'bold',
   },
   input: {
     borderWidth: 1,
-    borderColor: COLORS.grayLight,
+    borderColor: COLORS.black,
     padding: 15,
     marginVertical: 10,
     borderRadius: 5,
@@ -208,10 +212,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 5,
   },
-  linearGradient: {
-    width: '100%',
-    borderRadius: 50,
-  },
   loginBtn: {
     textAlign: 'center',
     justifyContent: 'center',
@@ -220,33 +220,12 @@ const styles = StyleSheet.create({
     height: 55,
     backgroundColor: COLORS.primary,
   },
-  loginText: {
-    color: COLORS.white,
-    fontSize: 16,
-    fontWeight: '400',
-  },
-  forgotPassText: {
-    color: COLORS.primary,
+  goToScannerText: {
+    color: COLORS.black,
     textAlign: 'center',
     fontWeight: 'bold',
     marginTop: 15,
   },
-  // footer
-  footer: {
-    position: 'absolute',
-    bottom: 20,
-    textAlign: 'center',
-    flexDirection: 'row',
-  },
-  footerText: {
-    color: COLORS.gray,
-    fontWeight: 'bold',
-  },
-  signupBtn: {
-    color: COLORS.primary,
-    fontWeight: 'bold',
-  },
-  // utils
   wFull: {
     width: '100%',
   },
@@ -256,12 +235,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
   },
-  mr7: {
-    marginRight: 7,
-  },
   logo: {
-    maxHeight: 200, // Set a maximum height for the logo
-    width: '100%', // Ensure the logo occupies the full width available
-    alignSelf: 'center', // Center the logo horizontally
+    maxHeight: 200,
+    width: 200,
+    alignSelf: 'center',
   },
 });

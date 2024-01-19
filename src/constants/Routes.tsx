@@ -14,5 +14,7 @@ export default {
 
 
     //BottomNavigation
-    BOTTOMHOME : 'Bottom Home'
+    BOTTOMHOME : 'Bottom Home',
+
+    NFC : 'NFC'
   };

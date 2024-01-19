@@ -25,7 +25,7 @@ function App(p) {
   const sendToServer = async (tag) => {
     await Request(
       'post',
-      'hr-time-sheets',
+      'hr-working-places-time-sheets',
       {},
       {name: data.contact_name, type: 'static-nfc', nfc_tag: tag.id},
       [p.route.params.id],
@@ -39,7 +39,7 @@ function App(p) {
       message: 'welcome to office',
       type: 'success',
     });
-    navigation.navigate(ROUTES.WORKING_PLACES + ' Edit', {id :p.route.params.id });
+    navigation.navigate(ROUTES.WORKING_PLACES + 'detail', {id :p.route.params.id });
   };
 
   const onFailed = res => {

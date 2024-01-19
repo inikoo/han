@@ -133,11 +133,12 @@ const ProfileScreen = () => {
           icon="content-save"
           mode="contained"
           onPress={handleSubmit(onSubmit)}
-          style={styles.editButton}>
+          style={styles.editButton} buttonColor={COLORS.primary}>
           Save
         </Button>
         <Button
           mode="outlined"
+          textColor={COLORS.primary}
           onPress={() => navigation.navigate(ROUTES.BOTTOMHOME)}
           style={styles.logoutButton}>
           Cancel
@@ -234,10 +235,11 @@ const styles = StyleSheet.create({
   },
   editButton: {
     marginBottom: 10,
+    color: COLORS.primary
     // Properti lain sesuai kebutuhan gaya
   },
   logoutButton: {
-    // Properti lain sesuai kebutuhan gaya
+    color: COLORS.primary
   },
   formItem: {
     padding: 5,

@@ -14,6 +14,10 @@ export { default as WorkingPlacesDetail } from './home/HR/WorkingPlaces/WorkingP
 export { default as ClockingMachines } from './home/HR/ClockingMachines';
 export { default as CreateClockingMachines } from './home/HR/ClockingMachines/CreateClockingMachines';
 
+
+//NFC
+export { default as NFC } from './home/NFC';
+
 // Auth Screens
 export { default as Login } from './auth/LoginFormScreen';
 export { default as LoginScanner } from './auth/LoginScannerScreen';

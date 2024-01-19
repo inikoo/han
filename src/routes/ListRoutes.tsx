@@ -12,6 +12,7 @@ import {
   WokingPlacesCreateClockingMachine,
   CreateClockingMachines,
   ClockingMachines,
+  NFC
 } from '~/screens';
 import {ROUTES} from '~/constants';
 import {Icon} from 'react-native-paper';
@@ -46,7 +47,7 @@ export default {
           option: {headerShown: false},
         },
         //hr
-        {
+        /* {
           name: ROUTES.HR,
           component: HomeHr,
           option: {headerShown: false},
@@ -102,7 +103,7 @@ export default {
           component: CreateClockingMachines,
           option: {headerShown: true},
           permissions: ['hr', 'hr.edit'],
-        },
+        }, */
       ],
 
 
@@ -123,13 +124,12 @@ export default {
               },
             },
             {
-              name: ROUTES.HR,
-              component: HomeHr,
-              permissions: ['hr', 'hr.view'],
+              name: ROUTES.NFC,
+              component: NFC,
               option: {
-                headerShown: true,
+                headerShown: false,
                 tabBarIcon: ({color}) => (
-                  <Icon source="human-male-board-poll" color={color} size={26} />
+                  <Icon source="home" color={color} size={26} />
                 ),
               },
             },
@@ -142,10 +142,22 @@ export default {
                   <Icon source="account" color={color} size={26} />
                 ),
               },
-            },
+            }
+           /*  {
+              name: ROUTES.HR,
+              component: HomeHr,
+              permissions: ['hr', 'hr.view'],
+              option: {
+                headerShown: true,
+                tabBarIcon: ({color}) => (
+                  <Icon source="human-male-board-poll" color={color} size={26} />
+                ),
+              },
+            }, */
           ],
         },
-        {
+        
+       /*  {
           name: ROUTES.WORKING_PLACES + ' Detail',
           option: {headerShown: false},
           components: [
@@ -172,6 +184,6 @@ export default {
               },
             },
           ],
-        },
+        }, */
       ]
   }
