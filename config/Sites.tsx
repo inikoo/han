@@ -1,6 +1,6 @@
 function sites() {
 		return {
-            API: "https://aiku-devels.uk/"
+            API: "https://aiku-sandbox.uk/"
 		};
 }
 

@@ -1,7 +1,5 @@
 import axios from "axios";
-/* import RNFetchBlob from "rn-fetch-blob"; */
-import validate from "validate.js";
-import {Sites,Urls} from "../../config";
+import { Sites, Urls } from "../../Config";
 
 const CancelToken = axios.CancelToken;
 let api,
@@ -44,12 +42,12 @@ function onError(error : object, extra : object, onFailed : Function) {
 function Request(
 	method:String,
 	url_key:String,
-	headers = {},
-	data = {},
-	args = [],
-	onSuccess = () => {},
-	onFailed = () => {},
-	extra = undefined
+	headers:Object,
+	data:Object,
+	args:Array,
+	onSuccess:Function,
+	onFailed:Function,
+	extra: any
 ) {
 	if (typeof headers !== "object") {
 		throw "Invalid headers, headers must be an object";
@@ -88,7 +86,6 @@ function Request(
 
 	parentArgs = arguments;
 
-	console.log(Urls[url_key])
 
 /* 	if (validate.isArray(data)) {
 		RNFetchBlob.fetch(method, Sites.HAN.API + api, headers, data)
@@ -103,8 +100,12 @@ function Request(
 				instance.cancel = c;
 			})
 		})
-			.then(response => onSuccess(response.data, extra))
-			.catch(error => onFailed(error));
+			.then(response => {
+				onSuccess(response.data, extra)}
+			)
+			.catch(error => {
+				onFailed(error)
+});
 	/* } */
 	return instance;
 }

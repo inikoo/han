@@ -1,22 +1,9 @@
-import { WriteCredential } from "../utils/auth";
-
-const defaultReducer = {
-  message: {
-    inUnconfirmed: 0,
-    outUnconfirmed: 0,
-  },
-  insertTag: {
-    isOpen: false,
-    newTag: null,
-    navigation: null,
-    openQRScan: () => null,
-  },
-};
+import { WriteCredential, WriteOrganisation, WriteWarehouse } from '../Utils/auth';
 
 export default {
-  userReducer(state = {}, action : object) {
+  userReducer(state = {}, action: object) {
     switch (action.type) {
-      case "CreateUserSession":
+      case 'CreateUserSession':
         state = {
           token: action.payload.token,
           id: action.payload.id,
@@ -30,11 +17,73 @@ export default {
           status: action.payload.status,
           roles: action.payload.roles,
           permissions: action.payload.permissions,
-          clocking_status:  action.payload.clocking_status
+          group: action.payload.group,
+          organisations: action.payload.organisations,
         };
         WriteCredential(state);
+        break;
+      case 'DestroyUserSession':
+        state = {
+          token: null,
+          id: null,
+          slug: null,
+          username: null,
+          email: null,
+          avatar: null,
+          contact_name: null,
+          created_at: null,
+          updated_at: null,
+          status: null,
+          roles: null,
+          permissions: null,
+          group: null,
+          organisations: null,
+        };
         break;
     }
     return state;
   },
+
+  organisationReducer(state = {}, action: object) {
+    switch (action.type) {
+      case 'CreateUserOrganisation':
+        state = {
+          organisations: action.payload.organisations,
+          active_organisation: action.payload.active_organisation,
+        };
+        WriteOrganisation(state);
+        break;
+    }
+    return state;
+  },
+
+
+  warehouseReducer(state = {}, action: object) {
+    switch (action.type) {
+      case 'CreateWarehouse':
+        state = {
+         code : action.payload.code,
+         id : action.payload.id,
+         name : action.payload.name,
+         number_location : action.payload.number_location,
+         number_warehouse_areas : action.payload.number_warehouse_areas,
+         slug : action.payload.slug
+        };
+        WriteWarehouse(state);
+        break;
+        case 'DestroyWarehouse':
+          state = {
+           code : null,
+           id : null,
+           name : null,
+           number_location : null,
+           number_warehouse_areas : null,
+           slug : null
+          };
+          WriteWarehouse(state);
+          break;
+    }
+    return state;
+  },
+
 };
