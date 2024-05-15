@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Login, Dashboard} from '~/Screens';
+import {Welcome, SetupClockingMachines, Dashboard, SetupScanner } from '~/Screens';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import Action from '~/Store/Action';
@@ -70,24 +70,41 @@ function Routes() {
 
   return (
     <Stack.Navigator>
-      {!userStorage ? (
+    {!userStorage ? (
+      <>
         <Stack.Screen
-          name="login"
-          component={Login}
+          name="welcome"
+          component={Welcome}
           options={{
             headerShown: false,
           }}
         />
-      ) : (
         <Stack.Screen
-          name="dashboard"
-          component={Dashboard}
+          name="setupClockingMachines"
+          component={SetupClockingMachines}
           options={{
             headerShown: false,
           }}
         />
-      )}
-    </Stack.Navigator>
+         <Stack.Screen
+          name="setupScanner"
+          component={SetupScanner}
+          options={{
+            headerShown: false,
+          }}
+        />
+      </>
+    ) : (
+      <Stack.Screen
+        name="dashboard"
+        component={Dashboard}
+        options={{
+          headerShown: false,
+        }}
+      />
+    )}
+  </Stack.Navigator>
+  
   );
 }
 

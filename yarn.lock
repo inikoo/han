@@ -5872,6 +5872,7 @@ __metadata:
     react: 18.2.0
     react-native: 0.74.1
     react-native-alert-notification: ^0.4.0
+    react-native-camera: ^4.2.1
     react-native-device-info: ^10.12.0
     react-native-image-crop-picker: ^0.40.2
     react-native-image-picker: ^7.1.0
@@ -8696,7 +8697,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.5.10, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.5.10, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -8859,6 +8860,15 @@ __metadata:
     react-native: ">=0.62.0"
     react-native-safe-area-context: "*"
   checksum: a3698e5b03543e193c56f634c9f9fe7bd769ce8df6d9ed4b51d5014e6b6626298a580ea6aeab62c83e5c39909408063ac130ddcabf049d958ebb8ae64bd06d4c
+  languageName: node
+  linkType: hard
+
+"react-native-camera@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "react-native-camera@npm:4.2.1"
+  dependencies:
+    prop-types: ^15.6.2
+  checksum: 0e84ce657774694d1cc49395c43a8f2caabc03df36aa77aacfb5c797ad8cfe0368f4807deccc54e82ff2b193e8c2d1ce7ad504eedf7a9fc4719b38e39958a804
   languageName: node
   linkType: hard
 
