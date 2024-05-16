@@ -4,4 +4,7 @@ export { default as SetupScanner } from './auth/SetupScanner';
 
 
 
+
 export { default as Dashboard } from './Dashboard';
+export { default as EnterPin } from './clockingMachines/EnterPin';
+export { default as TakeImage } from './clockingMachines/TakeImage';

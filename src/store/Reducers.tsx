@@ -1,89 +1,38 @@
-import { WriteCredential, WriteOrganisation, WriteWarehouse } from '../Utils/auth';
+import { WriteCredential } from '../Utils/auth';
 
 export default {
   userReducer(state = {}, action: object) {
     switch (action.type) {
-      case 'CreateUserSession':
+      case 'CreateClokingMachineSession':
         state = {
-          token: action.payload.token,
-          id: action.payload.id,
+          id: action.payload.token,
+          organisation_slug: action.payload.organisation_slug,
+          workplace_slug: action.payload.workplace_slug,
           slug: action.payload.slug,
-          username: action.payload.username,
-          email: action.payload.email,
-          avatar: action.payload.avatar,
-          contact_name: action.payload.contact_name,
+          name: action.payload.name,
+          type: action.payload.type,
           created_at: action.payload.created_at,
           updated_at: action.payload.updated_at,
-          status: action.payload.status,
-          roles: action.payload.roles,
-          permissions: action.payload.permissions,
-          group: action.payload.group,
-          organisations: action.payload.organisations,
+          nfc_tag: action.payload.nfc_tag,
         };
         WriteCredential(state);
         break;
-      case 'DestroyUserSession':
+      case 'DestroyClokingMachineSession':
         state = {
-          token: null,
           id: null,
+          organisation_slug: null,
+          workplace_slug: null,
           slug: null,
-          username: null,
-          email: null,
-          avatar: null,
-          contact_name: null,
+          name: null,
+          type: null,
           created_at: null,
           updated_at: null,
-          status: null,
-          roles: null,
-          permissions: null,
-          group: null,
-          organisations: null,
+          nfc_tag: null,
         };
         break;
     }
     return state;
   },
 
-  organisationReducer(state = {}, action: object) {
-    switch (action.type) {
-      case 'CreateUserOrganisation':
-        state = {
-          organisations: action.payload.organisations,
-          active_organisation: action.payload.active_organisation,
-        };
-        WriteOrganisation(state);
-        break;
-    }
-    return state;
-  },
-
-
-  warehouseReducer(state = {}, action: object) {
-    switch (action.type) {
-      case 'CreateWarehouse':
-        state = {
-         code : action.payload.code,
-         id : action.payload.id,
-         name : action.payload.name,
-         number_location : action.payload.number_location,
-         number_warehouse_areas : action.payload.number_warehouse_areas,
-         slug : action.payload.slug
-        };
-        WriteWarehouse(state);
-        break;
-        case 'DestroyWarehouse':
-          state = {
-           code : null,
-           id : null,
-           name : null,
-           number_location : null,
-           number_warehouse_areas : null,
-           slug : null
-          };
-          WriteWarehouse(state);
-          break;
-    }
-    return state;
-  },
-
+ 
 };

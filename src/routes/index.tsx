@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Welcome, SetupClockingMachines, Dashboard, SetupScanner } from '~/Screens';
+import {Welcome, SetupClockingMachines, Dashboard, SetupScanner, TakeImage, EnterPin } from '~/Screens';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import Action from '~/Store/Action';
-import {UpdateCredential, RemoveCredential} from '~/Utils/auth';
+import { RemoveCredential} from '~/Utils/auth';
+import {useDispatch} from 'react-redux';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,41 +18,16 @@ function Routes() {
   const checkUser = async () => {
     try {
       const storedUser = await AsyncStorage.getItem('@AuthenticationToken:Key');
-      const organisation = await AsyncStorage.getItem('@organisation:Key');
-      const warehouse = await AsyncStorage.getItem('@warehouse:Key');
-
       if (!storedUser) {
         setUserStorage(null);
       } else {
         const data = JSON.parse(storedUser);
-        const profile = await UpdateCredential(data.token);
-
-        if (profile.status === 'Success' && data.token) {
-          if (!user.token) {
-            dispatch(
-              Action.CreateUserSessionProperties({...data, ...profile.data}),
-            );
-            if (organisation)
-              dispatch(
-                Action.CreateUserOrganisationProperties(
-                  JSON.parse(organisation),
-                ),
-              );
-            if (warehouse)
-              dispatch(Action.CreateWarehouseProperties(JSON.parse(warehouse)));
-          }
-          setUserStorage(data);
-        } else {
-          setUserStorage(null);
-          RemoveCredential();
-          dispatch(Action.DestroyUserSessionProperties());
-        }
+        if(!user || Object.keys(user).length == 0)  dispatch(Action.CreateUserSessionProperties({...data }));
+        setUserStorage(data);
       }
     } catch (error) {
-      console.error('Error fetching credentials from AsyncStorage:', error);
       setUserStorage(null);
       RemoveCredential();
-      dispatch(Action.DestroyUserSessionProperties());
     } finally {
       setIsLoading(false);
     }
@@ -95,13 +71,29 @@ function Routes() {
         />
       </>
     ) : (
-      <Stack.Screen
+      <>
+       <Stack.Screen
         name="dashboard"
         component={Dashboard}
         options={{
           headerShown: false,
         }}
       />
+       <Stack.Screen
+        name="EnterPin"
+        component={EnterPin}
+        options={{
+          headerShown: false,
+        }}
+      />
+       <Stack.Screen
+        name="TakeImage"
+        component={TakeImage}
+        options={{
+          headerShown: false,
+        }}
+      />
+      </>
     )}
   </Stack.Navigator>
   

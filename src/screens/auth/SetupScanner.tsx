@@ -3,19 +3,44 @@ import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {useDispatch} from 'react-redux';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { MAINCOLORS } from '~/Utils/Colors';
+import {useNavigation} from '@react-navigation/native';
+import { Request } from '~/Utils';
+import Action from '~/Store/Action';
 
 export default function LoginScanner() {
   const [scanned, setScanned] = useState(true);
   const dispatch = useDispatch();
 
+
+  const sendQr = async(data) =>{
+    await Request(
+      'get',
+      'setup-cloking-machine',
+      {},
+      {},
+      [data],
+      onSuccessConnect,
+      onFailedConnect,
+    );
+  }
+
+
+  const onSuccessConnect = (res) =>{
+    dispatch(Action.CreateUserSessionProperties({...res.data }));
+  }
+
+  const onFailedConnect = (res) =>{
+    console.log(res)
+  }
+
   const onSuccess = e => {
-    console.log(encodeURIComponent)
+    sendQr(e.data)
   };
 
   return (
     <View style={styles.container}>
       {scanned ? (
-        <View style={styles.qrCodeScanner}>
+        <View style={styles.qrCodeScanner}>   
           <QRCodeScanner
             onRead={onSuccess}
             showMarker={true}

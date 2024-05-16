@@ -5,8 +5,10 @@ import ConnectImage from '../../assets/image/20945391.jpg';
 import styles from './style';
 import {useNavigation} from '@react-navigation/native';
 
+
 const WelcomeScreen = () => {
   const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.containerView}>
       <View style={styles.contentContainer}>
