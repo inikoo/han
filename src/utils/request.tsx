@@ -1,113 +1,81 @@
 import axios from "axios";
 import { Sites, Urls } from "../../Config";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CancelToken = axios.CancelToken;
-let api,
-	parentArgs,
-	instance = {};
+let instance = {};
 
-function onError(error : object, extra : object, onFailed : Function) {
-	if (typeof error !== "undefined") {
-		if (typeof error.response !== "undefined") {
-			if (typeof error.response.data !== "undefined") {
-				if (typeof error.response.data === "object") {
-					onFailed(error, extra);
-				} else {
-				/* 	Modules.responseMessage("danger", "Wrong return from server!"); */
-					onFailed({
-						response: {
-							data: {
-								detail: "Wrong return from server!"
-							}
-						}
-					});
-				}
-			}
-		} else if (error.toString() === "Cancel") {
-			onFailed({
-				response: {
-					data: {
-						detail: error.message ? error.message : "Operation canceled!"
-					}
-				}
-			});
-		} else {
-			onFailed({
-				response: { data: { detail: "Connection to Server Failed!" } }
-			});
-		}
-	}
-}
-
-function Request(
-	method:String,
-	url_key:String,
-	headers:Object,
-	data:Object,
-	args:Array,
-	onSuccess:Function,
-	onFailed:Function,
-	extra: any
+async function Request(
+  method : String,
+  url_key : String,
+  headers : Object,
+  data : Object,
+  args : Array,
+  onSuccess : Function,
+  onFailed : Function,
+  extra: Object
 ) {
-	if (typeof headers !== "object") {
-		throw "Invalid headers, headers must be an object";
-	}
+  try {
+    let token = ''
+    const storedUser = await AsyncStorage.getItem('@AuthenticationToken:Key');
+    if (storedUser) token = JSON.parse(storedUser);
 
-	if (!Array.isArray(args)) {
-		throw "Invalid arguments, data must be an array";
-	}
+    if (typeof headers !== "object") {
+      throw new Error("Invalid headers, headers must be an object");
+    }
 
-	if (typeof onSuccess !== "function") {
-		throw "Invalid onSuccess, onSuccess must be a function";
-	}
+    if (!Array.isArray(args)) {
+      throw new Error("Invalid arguments, data must be an array");
+    }
 
-	if (typeof onFailed !== "function") {
-		throw "Invalid onSuccess, onSuccess must be a function";
-	}
+    if (typeof onSuccess !== "function") {
+      throw new Error("Invalid onSuccess, onSuccess must be a function");
+    }
 
-	if (method === "get" && data) {
-		data = {
-			params: data
-		};
-	}
+    if (typeof onFailed !== "function") {
+      throw new Error("Invalid onFailed, onFailed must be a function");
+    }
 
-	if (typeof axios[method] !== "function") {
-		throw "Invalid method";
-	}
+    if (typeof axios[method] !== "function") {
+      throw new Error("Invalid method");
+    }
 
-	api = Urls[url_key];
-	if (!api) {
-		throw "Invalid url key";
-	}
+    let api = Urls[url_key];
+    if (!api) {
+      throw new Error("Invalid url key");
+    }
 
-	args.map((value, index) => {
-		api = api.replace("{}", value);
-	});
+    args.forEach((value, index) => {
+      api = api.replace("{}", value);
+    });
 
-	parentArgs = arguments;
+    if (method === "get" && data) {
+      data = {
+        params: data
+      };
+    }
 
+    headers = { ...headers, Authorization: 'Bearer ' + token.token };
 
-/* 	if (validate.isArray(data)) {
-		RNFetchBlob.fetch(method, Sites.HAN.API + api, headers, data)
-			.then(response => onSuccess(response.json(), extra))
-			.catch(error => onError(error, extra, onFailed));
-	} else { */
-		for (let header in headers) {
-			axios.defaults.headers.common[header] = headers[header];
-		}
-		axios[method](Sites.HAN.API + api, data, {
-			cancelToken: new CancelToken(function executor(c) {
-				instance.cancel = c;
-			})
-		})
-			.then(response => {
-				onSuccess(response.data, extra)}
-			)
-			.catch(error => {
-				onFailed(error)
-});
-	/* } */
-	return instance;
+    for (let header in headers) {
+      axios.defaults.headers.common[header] = headers[header];
+    }
+
+    const response = await axios({
+      method,
+      url: Sites.HAN.API + api,
+      data,
+      cancelToken: new CancelToken(function executor(c) {
+        instance.cancel = c;
+      })
+    });
+
+    onSuccess(response.data, extra);
+  } catch (error) {
+    onFailed(error);
+  }
+
+  return instance;
 }
 
 export default Request;

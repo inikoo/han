@@ -9,19 +9,27 @@ import { Request } from '~/Utils';
 import {useDispatch} from 'react-redux';
 import Action from '~/Store/Action';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import DeviceInfo from 'react-native-device-info';
 
 const WelcomeScreen = () => {
   const [text, onChangeText] = React.useState();
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  let devices = {
+   brand :  DeviceInfo.getBrand(),
+   uuid : DeviceInfo.getDeviceId(),
+  }
+
+  console.log(devices)
+
   const sendQr = async() =>{
     await Request(
-      'get',
+      'post',
       'setup-cloking-machine',
       {},
-      {},
-      [text],
+      {qr_code : text, device_name : devices.brand, uuid : devices.uuid },
+      [],
       onSuccess,
       onFailed,
     );
@@ -29,11 +37,10 @@ const WelcomeScreen = () => {
 
 
   const onSuccess = (res) =>{
-    dispatch(Action.CreateUserSessionProperties({...res.data }));
+    dispatch(Action.CreateUserSessionProperties({...res.data, token : res.token }));
   }
 
   const onFailed = (res) =>{
-    console.log(res)
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
@@ -71,8 +78,15 @@ const WelcomeScreen = () => {
           />
         </View>
 
-        <Button buttonStyle={{...styles.loginButton, marginTop: 10}} onPress={()=>sendQr()}>
-          <Text style={{color: '#ffff', fontWeight: 'bold'}}>Connect</Text>
+        <Button 
+          icon={{
+            name: 'cast-connected',
+            type: 'material',
+            size: 19,
+            color: 'white',
+          }}
+        buttonStyle={{...styles.loginButton, marginTop: 10}} onPress={()=>sendQr()}>
+          <Text style={{color: '#ffff', fontWeight: 'bold', fontSize : 20}}>Connect</Text>
         </Button>
       </View>
     </SafeAreaView>

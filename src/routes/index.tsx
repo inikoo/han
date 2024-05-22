@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Welcome, SetupClockingMachines, Dashboard, SetupScanner, TakeImage, EnterPin } from '~/Screens';
+import {Welcome, SetupClockingMachines, Dashboard, SetupScanner, TakeImage, EnterPin, Employee } from '~/Screens';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector} from 'react-redux';
 import Action from '~/Store/Action';
@@ -89,6 +89,13 @@ function Routes() {
        <Stack.Screen
         name="TakeImage"
         component={TakeImage}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Employee"
+        component={Employee}
         options={{
           headerShown: false,
         }}

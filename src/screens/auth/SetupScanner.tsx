@@ -14,11 +14,11 @@ export default function LoginScanner() {
 
   const sendQr = async(data) =>{
     await Request(
-      'get',
+      'post',
       'setup-cloking-machine',
       {},
-      {},
-      [data],
+      {qr_code : data, device_name : 'iphone'},
+      [],
       onSuccessConnect,
       onFailedConnect,
     );
@@ -26,7 +26,7 @@ export default function LoginScanner() {
 
 
   const onSuccessConnect = (res) =>{
-    dispatch(Action.CreateUserSessionProperties({...res.data }));
+    dispatch(Action.CreateUserSessionProperties({...res.data, token : res.token }));
   }
 
   const onFailedConnect = (res) =>{

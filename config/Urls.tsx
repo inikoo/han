@@ -3,6 +3,7 @@ export default {
 	"login-scanner" : "api/tokens/qr-code",
 	"profile" : "api/profile",
 
-	'setup-cloking-machine' : 'api/clocking/clocking-machine/{}',
-	'cloking-pin' : 'api/clocking/employees/pin'
+	'setup-cloking-machine' : 'api/clocking-machines/tokens/qr-code',
+	'cloking-pin' : 'api/clocking/employees/pin',
+	'clocking-machine-picture' : 'api/clocking/employees/{}',
 };

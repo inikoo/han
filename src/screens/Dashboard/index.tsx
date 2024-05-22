@@ -1,12 +1,12 @@
 import React from 'react';
-import {SafeAreaView, Image, View, TextInput} from 'react-native';
-import {Text, Button, Avatar} from '@rneui/base';
+import { SafeAreaView, Image, View } from 'react-native';
+import { Text, Button, Avatar } from '@rneui/base';
 import ConnectImage from '../../assets/image/20943993.jpg';
 import styles from './style';
-import {COLORS, MAINCOLORS} from '~/Utils/Colors';
-import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
-import {RemoveCredential} from '~/Utils/auth';
+import { COLORS, MAINCOLORS } from '~/Utils/Colors';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { RemoveCredential } from '~/Utils/auth';
 import Action from '~/Store/Action';
 
 const ClockingMachinesScreen = () => {
@@ -21,6 +21,18 @@ const ClockingMachinesScreen = () => {
 
   return (
     <SafeAreaView style={styles.containerView}>
+      <View style={styles.disconnectButtonContainer}>
+        <Button
+          buttonStyle={styles.disconnectButton}
+          onPress={logOut}
+          icon={{
+            name: 'log-out',
+            type: 'entypo',
+            size: 30,
+            color: 'white',
+          }}
+        />
+      </View>
       <View style={styles.contentContainer}>
         <View style={styles.imageContainer}>
           <Image
@@ -32,16 +44,22 @@ const ClockingMachinesScreen = () => {
         <Text style={styles.title}>You Are Already Connected</Text>
 
         <View style={styles.containerData}>
+          <View>
+            <Text style={{ ...styles.title, fontSize: 30, color: COLORS.grey3 }}>
+              {clockingMachine.name}
+            </Text>
+          </View>
+
           <View style={styles.inputContainer}>
             <Avatar
               size={32}
-              icon={{name: 'pencil', type: 'font-awesome'}}
+              icon={{ name: 'warehouse', type: 'font-awesome-5' }}
               containerStyle={{
                 backgroundColor: MAINCOLORS.primary,
                 borderRadius: 10,
               }}
             />
-            <View style={{marginLeft: 15}}>
+            <View style={{ marginLeft: 15 }}>
               <Text style={styles.label}>Working Place</Text>
               <Text style={styles.dataDesc}>
                 {clockingMachine.workplace_slug}
@@ -52,28 +70,13 @@ const ClockingMachinesScreen = () => {
           <View style={styles.inputContainer}>
             <Avatar
               size={32}
-              icon={{name: 'pencil', type: 'font-awesome'}}
+              icon={{ name: 'mobile1', type: 'antdesign' }}
               containerStyle={{
                 backgroundColor: MAINCOLORS.primary,
                 borderRadius: 10,
               }}
             />
-            <View style={{marginLeft: 15}}>
-              <Text style={styles.label}>slug</Text>
-              <Text style={styles.dataDesc}>{clockingMachine.slug}</Text>
-            </View>
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Avatar
-              size={32}
-              icon={{name: 'pencil', type: 'font-awesome'}}
-              containerStyle={{
-                backgroundColor: MAINCOLORS.primary,
-                borderRadius: 10,
-              }}
-            />
-            <View style={{marginLeft: 15}}>
+            <View style={{ marginLeft: 15 }}>
               <Text style={styles.label}>Type</Text>
               <Text style={styles.dataDesc}>{clockingMachine.type}</Text>
             </View>
@@ -82,13 +85,9 @@ const ClockingMachinesScreen = () => {
 
         <Button
           buttonStyle={styles.loginButton}
-          onPress={() => navigation.navigate('EnterPin')}>
-          <Text style={{color: '#ffff', fontWeight: 'bold'}}>Start Absent</Text>
-        </Button>
-        <Button
-          buttonStyle={{backgroundColor: MAINCOLORS.danger, borderRadius: 10}}
-          onPress={() => logOut()}>
-          <Text style={{color: '#ffff', fontWeight: 'bold'}}>Disconnect</Text>
+          onPress={() => navigation.navigate('EnterPin')}
+        >
+          <Text style={{ color: '#ffff', fontWeight: 'bold' }}>Start Absent</Text>
         </Button>
       </View>
     </SafeAreaView>

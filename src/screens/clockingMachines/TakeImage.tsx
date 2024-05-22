@@ -7,18 +7,50 @@ import {
 import {RNCamera} from 'react-native-camera';
 import {CountdownCircleTimer} from 'react-native-countdown-circle-timer';
 import {MAINCOLORS} from '~/Utils/Colors';
+import { Request } from '~/Utils';
+import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 
-const ExampleApp = () => {
+
+const ExampleApp = (navigation) => {
   const cameraRef = useRef(null);
   const [countdount, onChangeCountdount] = React.useState(true);
+  const user = useSelector(state => state.userReducer);
+  const navigate = useNavigation();
+
 
   const takePicture = async () => {
     if (cameraRef.current) {
       const options = {quality: 0.5, base64: true};
       const data = await cameraRef.current.takePictureAsync(options);
-      console.log(data);
+      const  setBase64 = 'data:image/jpeg;base64,' + data.base64
+  /*     navigate.navigate('Employee') */
+      SendPin(setBase64)
     }
   };
+
+  
+  const SendPin = async(data) =>{
+    await Request(
+      'post',
+      'clocking-machine-picture',
+      {},
+      {photo : data},
+      [user.id,navigation.route.params.employee.id],
+      onSuccess,
+      onFailed,
+    );
+  }
+
+  const onSuccess = (e) =>{
+    console.log(e)
+     navigate.navigate('Employee',{data : e.data})
+  }
+
+
+  const onFailed = (e)=>{
+    console.log(e)
+  }
 
   const onCountDownComplete =() =>{
     onChangeCountdount(false)
@@ -30,7 +62,7 @@ const ExampleApp = () => {
       <RNCamera
         ref={cameraRef}
         style={styles.preview}
-        type={RNCamera.Constants.Type.back}
+        type={RNCamera.Constants.Type.front}
         flashMode={RNCamera.Constants.FlashMode.on}
       />
       {countdount && (
