@@ -5,5 +5,5 @@ export default {
 
 	'setup-cloking-machine' : 'han/connect',
 	'cloking-pin' : 'han/employee/{}',
-	'clocking-machine-picture' : 'api/clocking/employees/{}',
+	'clocking-machine-picture' : 'han/employee/{}/clocking',
 };

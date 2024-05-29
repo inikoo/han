@@ -37,14 +37,14 @@ const ExampleApp = (navigation) => {
       'clocking-machine-picture',
       {},
       {photo : data},
-      [user.id,navigation.route.params.employee.id],
+      [navigation.route.params.employee.id],
       onSuccess,
       onFailed,
     );
   }
 
   const onSuccess = (e) =>{
-     navigate.navigate('Employee',{data : e.data})
+     navigate.navigate('Employee',{data : {employee : navigation.route.params.employee, ...e.data }})
   }
 
 
