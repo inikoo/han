@@ -1,24 +1,15 @@
 import { StyleSheet } from 'react-native';
-import { MAINCOLORS, COLORS } from '~/Utils/Colors';
+import { MAINCOLORS } from '~/Utils/Colors';
 
 const styles = StyleSheet.create({
   containerView: {
     flex: 1,
-    backgroundColor: '#fff',
-  },
-  contentContainer: {
-    flex: 1,
-    paddingHorizontal: 25,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  imageContainer: {
-    marginBottom: 20,
+  contentContainer: {
+    width: '100%',
     alignItems: 'center',
-  },
-  connectImage: {
-    width: 150,
-    height: 150,
   },
   title: {
     fontSize: 24,
@@ -29,12 +20,8 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-  },
-  codeFieldRoot: {
     justifyContent: 'center',
-    marginTop: 20,
+    marginBottom: 20,
   },
   cell: {
     width: 50,
@@ -47,29 +34,27 @@ const styles = StyleSheet.create({
     margin: 5,
     borderRadius: 10,
   },
-  focusCell: {
-    borderColor: '#000',
-  },
-  loginButton: {
-    backgroundColor: MAINCOLORS.primary,
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    borderRadius: 10,
-  },
-
-  emojiFields : {
-    flexDirection: 'row',
+  emojiCell: {
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'space-between',
+  },
+  emojiText: {
+    fontSize: 24,
+  },
+  keyboardContainer: {
+    width: '100%',
     marginTop: 20,
   },
-  bottomSheetContainer: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+  keyboardSection: {
+    marginBottom: 20,
   },
-  emojiContainer: {
+  keyboardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  keyboardRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
@@ -82,9 +67,9 @@ const styles = StyleSheet.create({
   emoji: {
     fontSize: 30,
   },
-  emojiCell: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  activeCell: {
+    borderColor: MAINCOLORS.primary,
+    borderWidth: 2,
   },
 });
 

@@ -10,6 +10,7 @@ import {MAINCOLORS} from '~/Utils/Colors';
 import { Request } from '~/Utils';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
 
 const ExampleApp = (navigation) => {
@@ -43,13 +44,17 @@ const ExampleApp = (navigation) => {
   }
 
   const onSuccess = (e) =>{
-    console.log(e)
      navigate.navigate('Employee',{data : e.data})
   }
 
 
   const onFailed = (e)=>{
-    console.log(e)
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      title: 'Error',
+      textBody: 'failed to take photo'
+    });
+     navigate.navigate('EnterPin')
   }
 
   const onCountDownComplete =() =>{

@@ -1,87 +1,78 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {
   SafeAreaView,
-  Image,
   View,
-  TextInput,
   ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from 'react-native';
-import {Text, Button} from '@rneui/base';
-import ConnectImage from '../../assets/image/20943993.jpg';
-import {BottomSheet} from '@rneui/themed';
-import styles from './style';
-import {useNavigation, useFocusEffect} from '@react-navigation/native';
+import {Text} from '@rneui/base';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 import {Request} from '~/Utils';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
-import {useSelector} from 'react-redux';
-import {
-  CodeField,
-  Cursor,
-  useBlurOnFulfill,
-  useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
-import EmojiPicker, {emojisByCategory, EmojiObject} from 'rn-emoji-keyboard';
+import styles from './style';
 
 const specificEmojis = [
-  '🌴', '😀', '👽', '🍄', '👻', '👍🏼', '🚀', '🦄', '🐋', '☘️'
+  '🌴',
+  '😀',
+  '👽',
+  '🍄',
+  '👻',
+  '👍🏼',
+  '🚀',
+  '🦄',
+  '🐋',
+  '☘️',
 ];
-const CELL_COUNT = 2;
+
+const specificLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'X', 'Y', 'Z'];
+
+const specificNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 const WelcomeScreen = () => {
-  const [valueText, setValueText] = useState('');
+  const [valueText1, setValueText1] = useState('');
+  const [valueText2, setValueText2] = useState('');
   const [valueEmoji1, setValueEmoji1] = useState('');
   const [valueEmoji2, setValueEmoji2] = useState('');
+  const [valueNumber1, setValueNumber1] = useState('');
+  const [valueNumber2, setValueNumber2] = useState('');
   const [valueActiveFields, setValueActiveFields] = useState(1);
-  const [valueNumber, setValueNumber] = useState('');
-  const [emojiPickerVisible, setEmojiPickerVisible] = useState(false);
-
-  const ref1 = useBlurOnFulfill({value: valueText, cellCount: CELL_COUNT});
-  const ref3 = useBlurOnFulfill({value: valueNumber, cellCount: CELL_COUNT});
-
-  const [propsText, getCellOnLayoutHandlerText] = useClearByFocusCell({
-    value: valueText,
-    setValue: setValueText,
-  });
-  const [propsNumber, getCellOnLayoutHandlerNumber] = useClearByFocusCell({
-    value: valueNumber,
-    setValue: setValueNumber,
-  });
 
   const navigation = useNavigation();
   const user = useSelector(state => state.userReducer);
 
   useFocusEffect(
     useCallback(() => {
-      setValueText('');
-      setValueEmoji2('');
+      setValueText1('')
+      setValueText2('')
       setValueEmoji1('');
-      setValueNumber('');
+      setValueEmoji2('');
+      setValueNumber1('')
+      setValueNumber2('')
     }, []),
   );
 
   const SendPin = async () => {
-    console.log(`${user.organisation_id}:${valueText}${valueEmoji1}${valueEmoji2}${valueNumber}`)
     await Request(
-      'post',
+      'get',
       'cloking-pin',
       {},
-      {
-        pin: `${user.organisation_id}:${valueText}${valueEmoji1}${valueEmoji2}${valueNumber}`,
-      },
-      [],
+      {},
+      [
+        `${user.organisation_id}:${valueText1}${valueText2}${valueEmoji1}${valueEmoji2}${valueNumber1}${valueNumber2}`,
+      ],
       onSuccess,
       onFailed,
     );
   };
 
-  const onSuccess = e => {
-    console.log(e)
+  const onSuccess = e => { 
     navigation.navigate('TakeImage', {employee: e.data});
   };
 
   const onFailed = e => {
-    console.log(e)
+    console.log(e);
     Toast.show({
       type: ALERT_TYPE.DANGER,
       title: 'Error',
@@ -89,135 +80,160 @@ const WelcomeScreen = () => {
     });
   };
 
-  const handleEmojiPick = (emoji: EmojiObject) => {
-    if (valueActiveFields == 1) setValueEmoji1(emoji.emoji);
-    if (valueActiveFields == 2) setValueEmoji2(emoji.emoji);
-
-    setEmojiPickerVisible(false);
-  };
-
-  const getCustomEmojis = () => {
-    const customEmojis = [];
-    for (const [, value] of Object.entries(emojisByCategory)) {
-      const newData = value.data.filter(emoji =>
-        specificEmojis.includes(emoji.emoji),
-      );
-      customEmojis.push(...newData);
+  const handleLettersPick = (word) => {
+    if (valueActiveFields === 1) {
+      setValueText1(word);
+      setValueActiveFields(2);
+    } else if (valueActiveFields === 2) {
+      setValueText2(word);
+      setValueActiveFields(3);
     }
-    return [{title: 'Custom', data: customEmojis}];
   };
+
+  const handleEmojiPick = (emoji) => {
+    if (valueActiveFields === 3) {
+      setValueEmoji1(emoji);
+      setValueActiveFields(4);
+    } else if (valueActiveFields === 4) {
+      setValueEmoji2(emoji);
+      setValueActiveFields(5);
+    }
+  };
+
+  const handleNumberPick = (number) => {
+    if (valueActiveFields === 5) {
+      setValueNumber1(number);
+      setValueActiveFields(6);
+    } else if (valueActiveFields === 6) {
+      setValueNumber2(number);
+    }
+  };
+
+  useEffect(() => {
+    if (valueNumber2 !== '' && valueNumber1 !== '' && valueText1 !== '' && valueText2 !== '' && valueEmoji1 !== '' && valueEmoji2 !== '') {
+      SendPin();
+    }
+  }, [valueNumber2,valueNumber1,valueText1,valueText2,valueEmoji1,valueEmoji2 ]);
 
   return (
     <SafeAreaView style={styles.containerView}>
-      <View style={styles.contentContainer}>
-        <View style={styles.imageContainer}>
-          <Image
-            source={ConnectImage}
-            style={styles.connectImage}
-            resizeMode="cover"
-          />
-        </View>
+      <KeyboardAvoidingView style={styles.contentContainer} behavior="padding">
         <Text style={styles.title}>Enter Your Pin</Text>
-
         <View style={styles.inputContainer}>
-          <CodeField
-            ref={ref1}
-            {...propsText}
-            value={valueText}
-            onChangeText={setValueText}
-            cellCount={CELL_COUNT}
-            rootStyle={styles.codeFieldRoot}
-            keyboardType="default"
-            textContentType="oneTimeCode"
-            renderCell={({index, symbol, isFocused}) => (
-              <Text
-                key={index}
-                style={[styles.cell, isFocused && styles.focusCell]}
-                onLayout={getCellOnLayoutHandlerText(index)}>
-                {symbol || (isFocused ? <Cursor /> : null)}
-              </Text>
-            )}
-          />
+          <TouchableOpacity
+            style={[
+              styles.cell,
+              styles.emojiCell,
+              valueActiveFields === 1 && styles.activeCell,
+            ]}
+            onPress={() => setValueActiveFields(1)}
+          >
+            <Text style={styles.emojiText}>{valueText1}</Text>
+          </TouchableOpacity>
 
-          <View style={styles.emojiFields}>
-            <TouchableOpacity
-              style={[styles.cell, styles.emojiCell]}
-              onPress={() => {
-                setEmojiPickerVisible(true);
-                setValueActiveFields(1);
-              }}>
-              <Text style={styles.emojiText}>{valueEmoji1}</Text>
-            </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.cell,
+              styles.emojiCell,
+              valueActiveFields === 2 && styles.activeCell,
+            ]}
+            onPress={() => setValueActiveFields(2)}
+          >
+            <Text style={styles.emojiText}>{valueText2}</Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[styles.cell, styles.emojiCell]}
-              onPress={() => {
-                setEmojiPickerVisible(true);
-                setValueActiveFields(2);
-              }}>
-              <Text style={styles.emojiText}>{valueEmoji2}</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={[
+              styles.cell,
+              styles.emojiCell,
+              valueActiveFields === 3 && styles.activeCell,
+            ]}
+            onPress={() => setValueActiveFields(3)}
+          >
+            <Text style={styles.emojiText}>{valueEmoji1}</Text>
+          </TouchableOpacity>
 
-          <CodeField
-            ref={ref3}
-            {...propsNumber}
-            value={valueNumber}
-            onChangeText={setValueNumber}
-            cellCount={CELL_COUNT}
-            rootStyle={styles.codeFieldRoot}
-            keyboardType="number-pad"
-            textContentType="oneTimeCode"
-            renderCell={({index, symbol, isFocused}) => (
-              <Text
-                key={index}
-                style={[styles.cell, isFocused && styles.focusCell]}
-                onLayout={getCellOnLayoutHandlerNumber(index)}>
-                {symbol || (isFocused ? <Cursor /> : null)}
-              </Text>
-            )}
-          />
+          <TouchableOpacity
+            style={[
+              styles.cell,
+              styles.emojiCell,
+              valueActiveFields === 4 && styles.activeCell,
+            ]}
+            onPress={() => setValueActiveFields(4)}
+          >
+            <Text style={styles.emojiText}>{valueEmoji2}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.cell,
+              styles.emojiCell,
+              valueActiveFields === 5 && styles.activeCell,
+            ]}
+            onPress={() => setValueActiveFields(5)}
+          >
+            <Text style={styles.emojiText}>{valueNumber1}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.cell,
+              styles.emojiCell,
+              valueActiveFields === 6 && styles.activeCell,
+            ]}
+            onPress={() => setValueActiveFields(6)}
+          >
+            <Text style={styles.emojiText}>{valueNumber2}</Text>
+          </TouchableOpacity>
         </View>
 
-        <Button
-          icon={{
-            name: 'login',
-            type: 'material-community',
-            size: 19,
-            color: 'white',
-          }}
-          buttonStyle={{...styles.loginButton, marginTop: 30}}
-          onPress={SendPin}>
-          <Text style={{color: '#ffff', fontWeight: 'bold', fontSize: 20}}>
-            Submit
-          </Text>
-        </Button>
-
-        {/* <EmojiPicker
-          open={emojiPickerVisible}
-          onClose={() => setEmojiPickerVisible(false)}
-          expandable={true}
-          emojisByCategory={getCustomEmojis()}
-          onEmojiSelected={handleEmojiPick}
-        /> */}
-        <BottomSheet
-          isVisible={emojiPickerVisible}
-          containerStyle={{ backgroundColor : 'transparent'}}
-          onBackdropPress={() => setEmojiPickerVisible(false)}>
-          <View style={styles.bottomSheetContainer}>
-            <ScrollView contentContainerStyle={styles.emojiContainer}>
-              {specificEmojis.map((item, index) => (
+        <ScrollView contentContainerStyle={styles.keyboardContainer}>
+          <View style={styles.keyboardSection}>
+            <Text style={styles.keyboardTitle}>Letters</Text>
+            <View style={styles.keyboardRow}>
+              {specificLetters.map((word, index) => (
                 <TouchableOpacity
                   key={index}
                   style={styles.emojiButton}
-                  onPress={() => handleEmojiPick({emoji: item})}>
-                  <Text style={styles.emoji}>{item}</Text>
+                  onPress={() => handleLettersPick(word)}
+                >
+                  <Text style={styles.emoji}>{word}</Text>
                 </TouchableOpacity>
               ))}
-            </ScrollView>
+            </View>
           </View>
-        </BottomSheet>
-      </View>
+
+          <View style={styles.keyboardSection}>
+            <Text style={styles.keyboardTitle}>Emojis</Text>
+            <View style={styles.keyboardRow}>
+              {specificEmojis.map((emoji, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.emojiButton}
+                  onPress={() => handleEmojiPick(emoji)}
+                >
+                  <Text style={styles.emoji}>{emoji}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          <View style={styles.keyboardSection}>
+            <Text style={styles.keyboardTitle}>Numbers</Text>
+            <View style={styles.keyboardRow}>
+              {specificNumbers.map((number, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.emojiButton}
+                  onPress={() => handleNumberPick(number)}
+                >
+                  <Text style={styles.emoji}>{number}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

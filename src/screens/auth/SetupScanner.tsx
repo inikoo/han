@@ -6,18 +6,24 @@ import { MAINCOLORS } from '~/Utils/Colors';
 import {useNavigation} from '@react-navigation/native';
 import { Request } from '~/Utils';
 import Action from '~/Store/Action';
+import DeviceInfo from 'react-native-device-info';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
 export default function LoginScanner() {
   const [scanned, setScanned] = useState(true);
   const dispatch = useDispatch();
 
+  let devices = {
+    brand :  DeviceInfo.getBrand(),
+    uuid : DeviceInfo.getDeviceId(),
+   }
 
   const sendQr = async(data) =>{
     await Request(
       'post',
       'setup-cloking-machine',
       {},
-      {qr_code : data, device_name : 'iphone'},
+      {qr_code : data, device_name : devices.brand, device_uuid : devices.uuid },
       [],
       onSuccessConnect,
       onFailedConnect,
@@ -31,6 +37,11 @@ export default function LoginScanner() {
 
   const onFailedConnect = (res) =>{
     console.log(res)
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      title: 'Error',
+      textBody: res.response.data.message,
+    });
   }
 
   const onSuccess = e => {

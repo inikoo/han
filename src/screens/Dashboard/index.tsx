@@ -8,16 +8,38 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RemoveCredential } from '~/Utils/auth';
 import Action from '~/Store/Action';
+import { Request } from '~/Utils';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
 const ClockingMachinesScreen = () => {
   const navigation = useNavigation();
   const clockingMachine = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
-  const logOut = () => {
+  const logOut = async() => {
+    await Request(
+      'delete',
+      'setup-cloking-machine',
+      {},
+      {},
+      [],
+      onSuccessLogout,
+      onFailedLogout,
+    );
+  };
+
+  const onSuccessLogout =(res)=>{
     RemoveCredential();
     dispatch(Action.DestroyUserSessionProperties());
-  };
+  }
+
+  const onFailedLogout =(res)=>{
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      title: 'Error',
+      textBody: res.response.data.message,
+    });
+  }
 
   return (
     <SafeAreaView style={styles.containerView}>

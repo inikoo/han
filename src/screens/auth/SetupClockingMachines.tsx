@@ -21,14 +21,12 @@ const WelcomeScreen = () => {
    uuid : DeviceInfo.getDeviceId(),
   }
 
-  console.log(devices)
-
   const sendQr = async() =>{
     await Request(
       'post',
       'setup-cloking-machine',
       {},
-      {qr_code : text, device_name : devices.brand, uuid : devices.uuid },
+      {qr_code : text, device_name : devices.brand, device_uuid : devices.uuid },
       [],
       onSuccess,
       onFailed,
