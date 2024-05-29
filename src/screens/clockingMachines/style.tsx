@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   cell: {
-    width: 50,
-    height: 50,
+    width: 80,
+    height: 80,
     lineHeight: 50,
     fontSize: 24,
     borderWidth: 2,
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
   },
   keyboardSection: {
     marginBottom: 20,
+   
   },
   keyboardTitle: {
     fontSize: 18,
@@ -58,11 +59,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    borderColor: '#00000030',
+    borderRadius: 10,
+    borderWidth: 2,
+    marginHorizontal : 10
   },
   emojiButton: {
     width: '20%',
     alignItems: 'center',
-    marginVertical: 10,
+    paddingVertical: 10,
+/*     borderWidth: 2,
+    borderColor: '#00000030', */
   },
   emoji: {
     fontSize: 30,

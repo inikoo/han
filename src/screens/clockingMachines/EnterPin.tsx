@@ -118,7 +118,6 @@ const WelcomeScreen = () => {
   return (
     <SafeAreaView style={styles.containerView}>
       <KeyboardAvoidingView style={styles.contentContainer} behavior="padding">
-        <Text style={styles.title}>Enter Your Pin</Text>
         <View style={styles.inputContainer}>
           <TouchableOpacity
             style={[
@@ -189,7 +188,6 @@ const WelcomeScreen = () => {
 
         <ScrollView contentContainerStyle={styles.keyboardContainer}>
           <View style={styles.keyboardSection}>
-            <Text style={styles.keyboardTitle}>Letters</Text>
             <View style={styles.keyboardRow}>
               {specificLetters.map((word, index) => (
                 <TouchableOpacity
@@ -204,7 +202,6 @@ const WelcomeScreen = () => {
           </View>
 
           <View style={styles.keyboardSection}>
-            <Text style={styles.keyboardTitle}>Emojis</Text>
             <View style={styles.keyboardRow}>
               {specificEmojis.map((emoji, index) => (
                 <TouchableOpacity
@@ -219,7 +216,6 @@ const WelcomeScreen = () => {
           </View>
 
           <View style={styles.keyboardSection}>
-            <Text style={styles.keyboardTitle}>Numbers</Text>
             <View style={styles.keyboardRow}>
               {specificNumbers.map((number, index) => (
                 <TouchableOpacity
