@@ -6,4 +6,6 @@ export default {
 	'setup-cloking-machine' : 'han/connect',
 	'cloking-pin' : 'han/employee/{}',
 	'clocking-machine-picture' : 'han/employee/{}/clocking',
+
+	'disconnect-clocking-machine' : 'han/disconnect'
 };

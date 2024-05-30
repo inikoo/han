@@ -118,6 +118,9 @@ const WelcomeScreen = () => {
   return (
     <SafeAreaView style={styles.containerView}>
       <KeyboardAvoidingView style={styles.contentContainer} behavior="padding">
+     
+
+        <ScrollView contentContainerStyle={styles.keyboardContainer}>
         <View style={styles.inputContainer}>
           <TouchableOpacity
             style={[
@@ -185,8 +188,6 @@ const WelcomeScreen = () => {
             <Text style={styles.emojiText}>{valueNumber2}</Text>
           </TouchableOpacity>
         </View>
-
-        <ScrollView contentContainerStyle={styles.keyboardContainer}>
           <View style={styles.keyboardSection}>
             <View style={styles.keyboardRow}>
               {specificLetters.map((word, index) => (

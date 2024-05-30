@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   cell: {
-    width: 80,
-    height: 80,
+    width: 50,
+    height: 50,
     lineHeight: 50,
     fontSize: 24,
     borderWidth: 2,

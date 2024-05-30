@@ -19,7 +19,7 @@ const ClockingMachinesScreen = () => {
   const logOut = async() => {
     await Request(
       'delete',
-      'setup-cloking-machine',
+      'disconnect-clocking-machine',
       {},
       {},
       [],
